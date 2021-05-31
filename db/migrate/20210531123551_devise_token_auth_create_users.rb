@@ -30,10 +30,11 @@ class DeviseTokenAuthCreateUsers < ActiveRecord::Migration[6.1]
       
 
       ## User Info
-      t.string :name
-      t.string :nickname
       t.string :image
       t.string :email
+      t.string :first_name, :null => false, :default => ""
+      t.string :middle_name
+      t.string :last_name, :null => false, :default => ""
 
       ## Tokens
       t.json :tokens
@@ -45,6 +46,8 @@ class DeviseTokenAuthCreateUsers < ActiveRecord::Migration[6.1]
       t.inet     :current_sign_in_ip
       t.inet     :last_sign_in_ip
 
+      t.integer :company_id
+
       t.timestamps
     end
 
@@ -53,5 +56,8 @@ class DeviseTokenAuthCreateUsers < ActiveRecord::Migration[6.1]
     add_index :users, :reset_password_token, unique: true
     add_index :users, :confirmation_token,   unique: true
     add_index :users, :unlock_token,         unique: true
+    add_index :users, :company_id,           unique: true
+
+    add_foreign_key :users, :companies
   end
 end

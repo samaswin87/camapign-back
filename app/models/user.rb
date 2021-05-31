@@ -9,4 +9,6 @@ class User < ActiveRecord::Base
          :recoverable, :rememberable, :validatable,
          :lockable, :timeoutable, :trackable, :omniauthable
   include DeviseTokenAuth::Concerns::User
+
+  belongs_to :company
 end

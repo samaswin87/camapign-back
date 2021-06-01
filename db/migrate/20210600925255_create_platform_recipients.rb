@@ -20,13 +20,13 @@ class CreatePlatformRecipients < ActiveRecord::Migration[6.1]
       t.timestamps
     end
 
-    add_index :platform_recipients, :company_id,           unique: true
-    add_index :platform_recipients, :created_by_id,        unique: true
-    add_index :platform_recipients, :updated_by_id,        unique: true
-    add_index :platform_recipients, :first_name,           unique: true
-    add_index :platform_recipients, :last_name,            unique: true
-    add_index :platform_recipients, :phone,                unique: true
-    add_index :platform_recipients, :status,               unique: true
+    add_index :platform_recipients, :company_id
+    add_index :platform_recipients, :created_by_id
+    add_index :platform_recipients, :updated_by_id
+    add_index :platform_recipients, :first_name
+    add_index :platform_recipients, :last_name
+    add_index :platform_recipients, :phone
+    add_index :platform_recipients, :status
     
     add_foreign_key :platform_recipients, :companies, column: :company_id
     add_foreign_key :platform_recipients, :users, column: :created_by_id

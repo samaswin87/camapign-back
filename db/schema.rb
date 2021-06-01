@@ -16,20 +16,25 @@ ActiveRecord::Schema.define(version: 2021_06_01_123434) do
   enable_extension "plpgsql"
 
   create_table "companies", force: :cascade do |t|
-    t.string "name"
-    t.string "email"
-    t.string "phone"
-    t.integer "planCredit"
-    t.boolean "callForwarding"
-    t.boolean "messageForward"
-    t.integer "totalCredits"
-    t.integer "remainingCredits"
-    t.integer "creditPercentage"
-    t.string "apiToken"
-    t.integer "plan"
-    t.integer "status"
+    t.string "name", null: false
+    t.string "email", null: false
+    t.string "phone", null: false
+    t.integer "plan_credits", default: 0
+    t.boolean "call_forwarding", default: false
+    t.boolean "message_forward", default: false
+    t.integer "total_credits", default: 0
+    t.integer "remaining_credits", default: 0
+    t.integer "credit_percentage", default: 0
+    t.string "api_token"
+    t.integer "plan", default: 1
+    t.integer "status", default: 0
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.index ["email"], name: "index_companies_on_email", unique: true
+    t.index ["name"], name: "index_companies_on_name", unique: true
+    t.index ["phone"], name: "index_companies_on_phone", unique: true
+    t.index ["plan"], name: "index_companies_on_plan"
+    t.index ["status"], name: "index_companies_on_status"
   end
 
   create_table "platform_operators", force: :cascade do |t|
@@ -43,12 +48,12 @@ ActiveRecord::Schema.define(version: 2021_06_01_123434) do
     t.integer "updated_by_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["company_id"], name: "index_platform_operators_on_company_id", unique: true
-    t.index ["created_by_id"], name: "index_platform_operators_on_created_by_id", unique: true
-    t.index ["name"], name: "index_platform_operators_on_name", unique: true
-    t.index ["phone"], name: "index_platform_operators_on_phone", unique: true
-    t.index ["status"], name: "index_platform_operators_on_status", unique: true
-    t.index ["updated_by_id"], name: "index_platform_operators_on_updated_by_id", unique: true
+    t.index ["company_id"], name: "index_platform_operators_on_company_id"
+    t.index ["created_by_id"], name: "index_platform_operators_on_created_by_id"
+    t.index ["name"], name: "index_platform_operators_on_name"
+    t.index ["phone"], name: "index_platform_operators_on_phone"
+    t.index ["status"], name: "index_platform_operators_on_status"
+    t.index ["updated_by_id"], name: "index_platform_operators_on_updated_by_id"
   end
 
   create_table "platform_recipients", force: :cascade do |t|
@@ -69,13 +74,13 @@ ActiveRecord::Schema.define(version: 2021_06_01_123434) do
     t.integer "updated_by_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["company_id"], name: "index_platform_recipients_on_company_id", unique: true
-    t.index ["created_by_id"], name: "index_platform_recipients_on_created_by_id", unique: true
-    t.index ["first_name"], name: "index_platform_recipients_on_first_name", unique: true
-    t.index ["last_name"], name: "index_platform_recipients_on_last_name", unique: true
-    t.index ["phone"], name: "index_platform_recipients_on_phone", unique: true
-    t.index ["status"], name: "index_platform_recipients_on_status", unique: true
-    t.index ["updated_by_id"], name: "index_platform_recipients_on_updated_by_id", unique: true
+    t.index ["company_id"], name: "index_platform_recipients_on_company_id"
+    t.index ["created_by_id"], name: "index_platform_recipients_on_created_by_id"
+    t.index ["first_name"], name: "index_platform_recipients_on_first_name"
+    t.index ["last_name"], name: "index_platform_recipients_on_last_name"
+    t.index ["phone"], name: "index_platform_recipients_on_phone"
+    t.index ["status"], name: "index_platform_recipients_on_status"
+    t.index ["updated_by_id"], name: "index_platform_recipients_on_updated_by_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -106,12 +111,15 @@ ActiveRecord::Schema.define(version: 2021_06_01_123434) do
     t.inet "current_sign_in_ip"
     t.inet "last_sign_in_ip"
     t.integer "company_id"
+    t.integer "status", default: 0
+    t.datetime "archived_at"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["company_id"], name: "index_users_on_company_id", unique: true
+    t.index ["company_id"], name: "index_users_on_company_id"
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
+    t.index ["status"], name: "index_users_on_status"
     t.index ["uid", "provider"], name: "index_users_on_uid_and_provider", unique: true
     t.index ["unlock_token"], name: "index_users_on_unlock_token", unique: true
   end
@@ -122,7 +130,7 @@ ActiveRecord::Schema.define(version: 2021_06_01_123434) do
     t.integer "order", default: 0
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["depository_id"], name: "index_workflow_communications_on_depository_id", unique: true
+    t.index ["depository_id"], name: "index_workflow_communications_on_depository_id"
   end
 
   create_table "workflow_declarations", force: :cascade do |t|
@@ -133,9 +141,9 @@ ActiveRecord::Schema.define(version: 2021_06_01_123434) do
     t.integer "updated_by_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["created_by_id"], name: "index_workflow_declarations_on_created_by_id", unique: true
-    t.index ["depository_id"], name: "index_workflow_declarations_on_depository_id", unique: true
-    t.index ["updated_by_id"], name: "index_workflow_declarations_on_updated_by_id", unique: true
+    t.index ["created_by_id"], name: "index_workflow_declarations_on_created_by_id"
+    t.index ["depository_id"], name: "index_workflow_declarations_on_depository_id"
+    t.index ["updated_by_id"], name: "index_workflow_declarations_on_updated_by_id"
   end
 
   create_table "workflow_depositories", force: :cascade do |t|
@@ -150,12 +158,12 @@ ActiveRecord::Schema.define(version: 2021_06_01_123434) do
     t.integer "updated_by_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["company_id"], name: "index_workflow_depositories_on_company_id", unique: true
-    t.index ["created_by_id"], name: "index_workflow_depositories_on_created_by_id", unique: true
-    t.index ["keyword"], name: "index_workflow_depositories_on_keyword", unique: true
-    t.index ["phone"], name: "index_workflow_depositories_on_phone", unique: true
-    t.index ["status"], name: "index_workflow_depositories_on_status", unique: true
-    t.index ["updated_by_id"], name: "index_workflow_depositories_on_updated_by_id", unique: true
+    t.index ["company_id"], name: "index_workflow_depositories_on_company_id"
+    t.index ["created_by_id"], name: "index_workflow_depositories_on_created_by_id"
+    t.index ["keyword"], name: "index_workflow_depositories_on_keyword"
+    t.index ["phone"], name: "index_workflow_depositories_on_phone"
+    t.index ["status"], name: "index_workflow_depositories_on_status"
+    t.index ["updated_by_id"], name: "index_workflow_depositories_on_updated_by_id"
   end
 
   add_foreign_key "platform_operators", "companies"

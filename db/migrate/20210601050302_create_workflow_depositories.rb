@@ -14,12 +14,12 @@ class CreateWorkflowDepositories < ActiveRecord::Migration[6.1]
       t.timestamps
     end
 
-    add_index :workflow_depositories, :company_id,           unique: true
-    add_index :workflow_depositories, :created_by_id,        unique: true
-    add_index :workflow_depositories, :updated_by_id,        unique: true
-    add_index :workflow_depositories, :keyword,              unique: true
-    add_index :workflow_depositories, :phone,                unique: true
-    add_index :workflow_depositories, :status,               unique: true
+    add_index :workflow_depositories, :company_id
+    add_index :workflow_depositories, :created_by_id
+    add_index :workflow_depositories, :updated_by_id
+    add_index :workflow_depositories, :keyword
+    add_index :workflow_depositories, :phone
+    add_index :workflow_depositories, :status
     
     add_foreign_key :workflow_depositories, :companies, column: :company_id
     add_foreign_key :workflow_depositories, :users, column: :created_by_id

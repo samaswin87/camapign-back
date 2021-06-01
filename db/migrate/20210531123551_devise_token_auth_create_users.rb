@@ -48,6 +48,8 @@ class DeviseTokenAuthCreateUsers < ActiveRecord::Migration[6.1]
       t.inet     :last_sign_in_ip
 
       t.integer :company_id
+      t.integer :status, default: 0
+      t.datetime :archived_at
 
       t.timestamps
     end
@@ -57,8 +59,9 @@ class DeviseTokenAuthCreateUsers < ActiveRecord::Migration[6.1]
     add_index :users, :reset_password_token, unique: true
     add_index :users, :confirmation_token,   unique: true
     add_index :users, :unlock_token,         unique: true
-    add_index :users, :company_id,           unique: true
+    add_index :users, :company_id
+    add_index :users, :status
 
-    add_foreign_key :users, :companies
+    add_foreign_key :users, :companies, columns: :company_id
   end
 end

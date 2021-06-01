@@ -7,7 +7,7 @@ class CreateWorkflowCommunications < ActiveRecord::Migration[6.1]
 
       t.timestamps
     end
-    add_index :workflow_communications, :depository_id,           unique: true
+    add_index :workflow_communications, :depository_id
     add_foreign_key :workflow_communications, :workflow_depositories, column: :depository_id
   end
 end

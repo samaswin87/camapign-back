@@ -9,9 +9,9 @@ class CreateWorkflowDeclarations < ActiveRecord::Migration[6.1]
       t.integer :updated_by_id
       t.timestamps
     end
-    add_index :workflow_declarations, :depository_id,           unique: true
-    add_index :workflow_declarations, :created_by_id,           unique: true
-    add_index :workflow_declarations, :updated_by_id,           unique: true
+    add_index :workflow_declarations, :depository_id
+    add_index :workflow_declarations, :created_by_id
+    add_index :workflow_declarations, :updated_by_id
 
     add_foreign_key :workflow_declarations, :workflow_depositories, column: :depository_id
     add_foreign_key :workflow_declarations, :users, column: :created_by_id

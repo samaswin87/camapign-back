@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_05_31_123551) do
+ActiveRecord::Schema.define(version: 2021_06_01_123434) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -30,6 +30,52 @@ ActiveRecord::Schema.define(version: 2021_05_31_123551) do
     t.integer "status"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "platform_operators", force: :cascade do |t|
+    t.integer "status", default: 0
+    t.string "phone"
+    t.datetime "archived_at"
+    t.integer "company_id"
+    t.string "name"
+    t.boolean "short_code", default: false
+    t.integer "created_by_id"
+    t.integer "updated_by_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["company_id"], name: "index_platform_operators_on_company_id", unique: true
+    t.index ["created_by_id"], name: "index_platform_operators_on_created_by_id", unique: true
+    t.index ["name"], name: "index_platform_operators_on_name", unique: true
+    t.index ["phone"], name: "index_platform_operators_on_phone", unique: true
+    t.index ["status"], name: "index_platform_operators_on_status", unique: true
+    t.index ["updated_by_id"], name: "index_platform_operators_on_updated_by_id", unique: true
+  end
+
+  create_table "platform_recipients", force: :cascade do |t|
+    t.integer "status", default: 0
+    t.string "phone"
+    t.datetime "archived_at"
+    t.integer "company_id"
+    t.string "first_name"
+    t.string "last_name"
+    t.string "middle_name"
+    t.string "no_of_campaigns", default: "0"
+    t.string "keywords", default: [], array: true
+    t.text "notes"
+    t.integer "gender", default: 1
+    t.jsonb "custom_fields", default: {}
+    t.string "tags", default: [], array: true
+    t.integer "created_by_id"
+    t.integer "updated_by_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["company_id"], name: "index_platform_recipients_on_company_id", unique: true
+    t.index ["created_by_id"], name: "index_platform_recipients_on_created_by_id", unique: true
+    t.index ["first_name"], name: "index_platform_recipients_on_first_name", unique: true
+    t.index ["last_name"], name: "index_platform_recipients_on_last_name", unique: true
+    t.index ["phone"], name: "index_platform_recipients_on_phone", unique: true
+    t.index ["status"], name: "index_platform_recipients_on_status", unique: true
+    t.index ["updated_by_id"], name: "index_platform_recipients_on_updated_by_id", unique: true
   end
 
   create_table "users", force: :cascade do |t|
@@ -70,5 +116,60 @@ ActiveRecord::Schema.define(version: 2021_05_31_123551) do
     t.index ["unlock_token"], name: "index_users_on_unlock_token", unique: true
   end
 
+  create_table "workflow_communications", force: :cascade do |t|
+    t.integer "depository_id"
+    t.text "body"
+    t.integer "order", default: 0
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["depository_id"], name: "index_workflow_communications_on_depository_id", unique: true
+  end
+
+  create_table "workflow_declarations", force: :cascade do |t|
+    t.integer "depository_id"
+    t.text "body"
+    t.string "destination_url"
+    t.integer "created_by_id"
+    t.integer "updated_by_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["created_by_id"], name: "index_workflow_declarations_on_created_by_id", unique: true
+    t.index ["depository_id"], name: "index_workflow_declarations_on_depository_id", unique: true
+    t.index ["updated_by_id"], name: "index_workflow_declarations_on_updated_by_id", unique: true
+  end
+
+  create_table "workflow_depositories", force: :cascade do |t|
+    t.integer "status", default: 0
+    t.integer "company_id"
+    t.string "keyword"
+    t.integer "no_of_contacts", default: 0
+    t.string "phone"
+    t.boolean "default", default: false
+    t.boolean "confidential", default: false
+    t.integer "created_by_id"
+    t.integer "updated_by_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["company_id"], name: "index_workflow_depositories_on_company_id", unique: true
+    t.index ["created_by_id"], name: "index_workflow_depositories_on_created_by_id", unique: true
+    t.index ["keyword"], name: "index_workflow_depositories_on_keyword", unique: true
+    t.index ["phone"], name: "index_workflow_depositories_on_phone", unique: true
+    t.index ["status"], name: "index_workflow_depositories_on_status", unique: true
+    t.index ["updated_by_id"], name: "index_workflow_depositories_on_updated_by_id", unique: true
+  end
+
+  add_foreign_key "platform_operators", "companies"
+  add_foreign_key "platform_operators", "users", column: "created_by_id"
+  add_foreign_key "platform_operators", "users", column: "updated_by_id"
+  add_foreign_key "platform_recipients", "companies"
+  add_foreign_key "platform_recipients", "users", column: "created_by_id"
+  add_foreign_key "platform_recipients", "users", column: "updated_by_id"
   add_foreign_key "users", "companies"
+  add_foreign_key "workflow_communications", "workflow_depositories", column: "depository_id"
+  add_foreign_key "workflow_declarations", "users", column: "created_by_id"
+  add_foreign_key "workflow_declarations", "users", column: "updated_by_id"
+  add_foreign_key "workflow_declarations", "workflow_depositories", column: "depository_id"
+  add_foreign_key "workflow_depositories", "companies"
+  add_foreign_key "workflow_depositories", "users", column: "created_by_id"
+  add_foreign_key "workflow_depositories", "users", column: "updated_by_id"
 end

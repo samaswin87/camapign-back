@@ -52,6 +52,7 @@ ActiveRecord::Schema.define(version: 2021_05_31_123551) do
     t.string "first_name", default: "", null: false
     t.string "middle_name"
     t.string "last_name", default: "", null: false
+    t.string "role", default: "user", null: false
     t.json "tokens"
     t.integer "sign_in_count", default: 0, null: false
     t.datetime "current_sign_in_at"

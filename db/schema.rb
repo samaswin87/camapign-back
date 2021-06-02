@@ -61,6 +61,7 @@ ActiveRecord::Schema.define(version: 2021_06_01_123434) do
     t.string "phone"
     t.datetime "archived_at"
     t.integer "company_id"
+    t.string "email"
     t.string "first_name"
     t.string "last_name"
     t.string "middle_name"

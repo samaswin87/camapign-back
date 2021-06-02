@@ -4,9 +4,53 @@ class Demo
   def initialize
     setup_companies
     setup_users
+    setup_platforms
   end
 
   private
+
+  def setup_platforms
+    setup_operators
+    setup_recipients
+  end
+
+  def setup_operators
+    puts "Creating operators"
+    (1..100).each do |index|
+      (1..5).each do |index|
+        print "."
+        Platform::Operator.create({
+          status: 0,
+          phone: Faker::PhoneNumber.cell_phone,
+          company_id: index,
+          name: Faker::Company.name,
+          created_by_id: 1,
+          updated_by_id: 1
+        })
+      end
+    end
+    puts "\nOperators creation completed"
+  end
+
+  def setup_recipients
+    puts "Creating recipients"
+    (1..100).each do |index|
+      (1..5).each do |index|
+        print "."
+        Platform::Recipient.create({
+          status: 0,
+          phone: Faker::PhoneNumber.cell_phone,
+          email: Faker::Internet.email,
+          company_id: index,
+          first_name: Faker::Name.first_name,
+          last_name: Faker::Name.last_name,
+          created_by_id: 1,
+          updated_by_id: 1
+        })
+      end
+    end
+    puts "\nRecipients creation completed"
+  end
 
   def setup_companies
     puts "Creating Companies"
@@ -29,7 +73,7 @@ class Demo
           })
       end
     end
-    puts "Companies creation completed"
+    puts "\nCompanies creation completed"
   end
 
   def setup_users
@@ -51,7 +95,7 @@ class Demo
     end
 
     (1..100).each do |index|
-      (1..10).each do |user|
+      (1..5).each do |user|
         print "."
         User.create(
           {
@@ -67,7 +111,7 @@ class Demo
         )
       end
     end
-    puts "Users creation completed"
+    puts "\nUsers creation completed"
   end
     
 end

@@ -14,6 +14,10 @@
 #  created_at    | timestamp(6) without time zone |           | not null |
 #  updated_at    | timestamp(6) without time zone |           | not null |
 module Platform
-    class Operator < PlatformModel
-    end
+  class Operator < PlatformModel
+    enum status: [:active, :inactive]
+    track_users
+
+    belongs_to :company
+  end
 end

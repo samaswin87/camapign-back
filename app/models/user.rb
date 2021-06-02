@@ -34,7 +34,7 @@
 #  archived_at            | timestamp without time zone    |           |          |
 #  created_at             | timestamp(6) without time zone |           | not null |
 #  updated_at             | timestamp(6) without time zone |           | not null |
-class User < ActiveRecord::Base
+class User < ApplicationRecord
   # issue: https://stackoverflow.com/questions/55626625/devise-token-auth-conflicts
   extend Devise::Models
   # Include default devise modules. Others available are:

@@ -7,6 +7,7 @@
 #  phone           | character varying              |           |          |
 #  archived_at     | timestamp without time zone    |           |          |
 #  company_id      | integer                        |           |          |
+#  email           | character varying              |           |          |
 #  first_name      | character varying              |           |          |
 #  last_name       | character varying              |           |          |
 #  middle_name     | character varying              |           |          |
@@ -22,5 +23,9 @@
 #  updated_at      | timestamp(6) without time zone |           | not null |
 module Platform
     class Recipient < PlatformModel
+        enum status: [:active, :inactive]
+        track_users
+
+        belongs_to :company
     end
 end

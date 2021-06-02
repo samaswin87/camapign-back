@@ -5,6 +5,7 @@ class CreatePlatformRecipients < ActiveRecord::Migration[6.1]
       t.string :phone
       t.timestamp :archived_at
       t.integer :company_id
+      t.string :email
       t.string :first_name
       t.string :last_name
       t.string :middle_name

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# Column         |              Type                       | Collation | Nullable |              Default
+# Column         |              Type              | Collation | Nullable |              Default
 # ------------------------+--------------------------------+-----------+----------+-----------------------------------
 #  id                     | bigint                         |           | not null | nextval('users_id_seq'::regclass)
 #  provider               | character varying              |           | not null | 'email'::character varying
@@ -22,7 +22,7 @@
 #  first_name             | character varying              |           | not null | ''::character varying
 #  middle_name            | character varying              |           |          |
 #  last_name              | character varying              |           | not null | ''::character varying
-#  role                   | character varying              |           | not null | 'user'::character varying
+#  role                   | integer                        |           |          | 0
 #  tokens                 | json                           |           |          |
 #  sign_in_count          | integer                        |           | not null | 0
 #  current_sign_in_at     | timestamp without time zone    |           |          |
@@ -30,6 +30,8 @@
 #  current_sign_in_ip     | inet                           |           |          |
 #  last_sign_in_ip        | inet                           |           |          |
 #  company_id             | integer                        |           |          |
+#  status                 | integer                        |           |          | 0
+#  archived_at            | timestamp without time zone    |           |          |
 #  created_at             | timestamp(6) without time zone |           | not null |
 #  updated_at             | timestamp(6) without time zone |           | not null |
 class User < ActiveRecord::Base
@@ -42,6 +44,8 @@ class User < ActiveRecord::Base
          :lockable, :timeoutable, :trackable, :omniauthable
   include DeviseTokenAuth::Concerns::User
 
+  enum status: [:active, :inactive]
+  enum role: [:admin, :user]
+
   belongs_to :company
-  has_one :company
 end

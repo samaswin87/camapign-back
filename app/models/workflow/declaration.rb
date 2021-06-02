@@ -15,5 +15,6 @@ module Workflow
         track_users
         
         belongs_to :depository, class_name: 'Workflow::Depository'
+        has_many :recipients, class_name: 'Platform::Recipient'
     end
 end

@@ -27,5 +27,6 @@ module Platform
         track_users
 
         belongs_to :company
+        has_many :workflow_recipients, class_name: 'Workflow::Recipient'
     end
 end

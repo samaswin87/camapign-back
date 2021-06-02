@@ -1,0 +1,19 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  depository_id: 1
+  reply_at: 2021-06-02 17:56:22
+  archived_at: 2021-06-02 17:56:22
+  state: 1
+  recipient_id: 1
+  progress: 1
+  completed_at: 2021-06-02 17:56:22
+
+two:
+  depository_id: 1
+  reply_at: 2021-06-02 17:56:22
+  archived_at: 2021-06-02 17:56:22
+  state: 1
+  recipient_id: 1
+  progress: 1
+  completed_at: 2021-06-02 17:56:22

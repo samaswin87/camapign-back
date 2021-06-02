@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_06_01_123434) do
+ActiveRecord::Schema.define(version: 2021_06_02_122622) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -171,6 +171,20 @@ ActiveRecord::Schema.define(version: 2021_06_01_123434) do
     t.index ["updated_by_id"], name: "index_workflow_prompts_on_updated_by_id"
   end
 
+  create_table "workflow_recipients", force: :cascade do |t|
+    t.integer "depository_id"
+    t.integer "recipient_id"
+    t.integer "state", default: 0
+    t.integer "progress", default: 0
+    t.datetime "reply_at"
+    t.datetime "archived_at"
+    t.datetime "completed_at"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["depository_id"], name: "index_workflow_recipients_on_depository_id"
+    t.index ["recipient_id"], name: "index_workflow_recipients_on_recipient_id"
+  end
+
   add_foreign_key "platform_operators", "companies"
   add_foreign_key "platform_operators", "users", column: "created_by_id"
   add_foreign_key "platform_operators", "users", column: "updated_by_id"
@@ -188,4 +202,6 @@ ActiveRecord::Schema.define(version: 2021_06_01_123434) do
   add_foreign_key "workflow_prompts", "users", column: "created_by_id"
   add_foreign_key "workflow_prompts", "users", column: "updated_by_id"
   add_foreign_key "workflow_prompts", "workflow_depositories", column: "depository_id"
+  add_foreign_key "workflow_recipients", "platform_recipients", column: "recipient_id"
+  add_foreign_key "workflow_recipients", "workflow_depositories", column: "depository_id"
 end

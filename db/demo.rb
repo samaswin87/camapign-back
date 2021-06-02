@@ -14,16 +14,31 @@ class Demo
     setup_workflow_depositories
     setup_workflow_declarations
     setup_workflow_prompts
+    setup_workflow_recipients
+  end
+
+  def setup_workflow_recipients
+    puts "Creating recipients"
+    Workflow::Depository.all.each do |depository|
+      (1..10).each do |i|
+        print "."
+        Workflow::Recipient.create({
+          depository_id: depository.id,
+          recipient_id: i,
+        })
+      end
+    end
+    puts "\nRecipients creation completed"
   end
 
   def setup_workflow_prompts
     puts "Creating prompts"
-    Workflow::Depository.all.each do |index|
+    Workflow::Depository.all.each do |depository|
       (1..5).each do |i|
         print "."
         Workflow::Prompt.create({
           order: i,
-          depository_id: index.id,
+          depository_id: depository.id,
           body: Faker::Lorem.paragraph,
           created_by_id: 1,
           updated_by_id: 1

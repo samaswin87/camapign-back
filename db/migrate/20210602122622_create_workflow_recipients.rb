@@ -3,7 +3,7 @@ class CreateWorkflowRecipients < ActiveRecord::Migration[6.1]
     create_table :workflow_recipients do |t|
       t.integer :depository_id
       t.integer :recipient_id
-      t.integer :state, default: 0
+      t.integer :status, default: 0
       t.integer :progress, default: 0
       t.datetime :reply_at
       t.datetime :archived_at

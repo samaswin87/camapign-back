@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_06_02_122622) do
+ActiveRecord::Schema.define(version: 2021_06_02_165950) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -125,6 +125,15 @@ ActiveRecord::Schema.define(version: 2021_06_02_122622) do
     t.index ["unlock_token"], name: "index_users_on_unlock_token", unique: true
   end
 
+  create_table "workflow_communications", force: :cascade do |t|
+    t.integer "status", default: 0
+    t.integer "recipient_id"
+    t.string "message"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["recipient_id"], name: "index_workflow_communications_on_recipient_id"
+  end
+
   create_table "workflow_declarations", force: :cascade do |t|
     t.integer "depository_id"
     t.text "body"
@@ -174,7 +183,7 @@ ActiveRecord::Schema.define(version: 2021_06_02_122622) do
   create_table "workflow_recipients", force: :cascade do |t|
     t.integer "depository_id"
     t.integer "recipient_id"
-    t.integer "state", default: 0
+    t.integer "status", default: 0
     t.integer "progress", default: 0
     t.datetime "reply_at"
     t.datetime "archived_at"
@@ -192,6 +201,7 @@ ActiveRecord::Schema.define(version: 2021_06_02_122622) do
   add_foreign_key "platform_recipients", "users", column: "created_by_id"
   add_foreign_key "platform_recipients", "users", column: "updated_by_id"
   add_foreign_key "users", "companies"
+  add_foreign_key "workflow_communications", "workflow_recipients", column: "recipient_id"
   add_foreign_key "workflow_declarations", "users", column: "created_by_id"
   add_foreign_key "workflow_declarations", "users", column: "updated_by_id"
   add_foreign_key "workflow_declarations", "workflow_depositories", column: "depository_id"

@@ -15,6 +15,21 @@ class Demo
     setup_workflow_declarations
     setup_workflow_prompts
     setup_workflow_recipients
+    setup_workflow_communications
+  end
+
+  def setup_workflow_communications
+    puts "Creating communications"
+    Workflow::Recipient.all.each do |recipient|
+      (1..10).each do |i|
+        print "."
+        Workflow::Communication.create({
+          recipient_id: recipient.id,
+          message: Faker::Lorem.paragraph,
+        })
+      end
+    end
+    puts "\nCommunications creation completed"
   end
 
   def setup_workflow_recipients

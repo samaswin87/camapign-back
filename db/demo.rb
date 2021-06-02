@@ -21,13 +21,11 @@ class Demo
   def setup_workflow_communications
     puts "Creating communications"
     Workflow::Recipient.all.each do |recipient|
-      (1..10).each do |i|
-        print "."
-        Workflow::Communication.create({
-          recipient_id: recipient.id,
-          message: Faker::Lorem.paragraph,
-        })
-      end
+      print "."
+      Workflow::Communication.create({
+        recipient_id: recipient.id,
+        message: Faker::Lorem.paragraph,
+      })
     end
     puts "\nCommunications creation completed"
   end
@@ -80,8 +78,8 @@ class Demo
   
   def setup_workflow_depositories
     puts "Creating depositories"
-    (1..100).each do |index|
-      (1..30).each do |i|
+    (1..10).each do |index|
+      (1..10).each do |i|
         print "."
         Workflow::Depository.create({
           status: 0,
@@ -104,7 +102,7 @@ class Demo
 
   def setup_operators
     puts "Creating operators"
-    (1..100).each do |index|
+    (1..10).each do |index|
       (1..10).each do |i|
         print "."
         Platform::Operator.create({
@@ -122,7 +120,7 @@ class Demo
 
   def setup_recipients
     puts "Creating recipients"
-    (1..100).each do |index|
+    (1..10).each do |index|
       (1..10).each do |i|
         print "."
         Platform::Recipient.create({
@@ -143,7 +141,7 @@ class Demo
   def setup_companies
     puts "Creating Companies"
     (0..4).each do |plan|
-      (1..20).each do |index|
+      [1, 2].each do |index|
         print "."
         Company.create(
           {
@@ -166,7 +164,7 @@ class Demo
 
   def setup_users
     puts "Creating Users"
-    (1..100).each do |index|
+    (1..10).each do |index|
       print "."
       User.create(
         {
@@ -182,7 +180,7 @@ class Demo
       )
     end
 
-    (1..100).each do |index|
+    (1..10).each do |index|
       (1..5).each do |user|
         print "."
         User.create(

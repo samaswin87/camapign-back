@@ -1,6 +1,6 @@
 require "test_helper"
 
-class WorkflowCommunicationTest < ActiveSupport::TestCase
+class WorkflowPromptTest < ActiveSupport::TestCase
   # test "the truth" do
   #   assert true
   # end

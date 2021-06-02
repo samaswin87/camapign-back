@@ -22,4 +22,7 @@ class Company < ApplicationRecord
     enum status: [:active, :inactive]
 
     has_many :users
+    has_many :operators, class_name: 'Platform::Operator'
+    has_many :recipients, class_name: 'Platform::Recipient'
+    has_many :depositories, class_name: 'Workflow::Depository'
 end

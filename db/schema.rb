@@ -125,15 +125,6 @@ ActiveRecord::Schema.define(version: 2021_06_01_123434) do
     t.index ["unlock_token"], name: "index_users_on_unlock_token", unique: true
   end
 
-  create_table "workflow_communications", force: :cascade do |t|
-    t.integer "depository_id"
-    t.text "body"
-    t.integer "order", default: 0
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["depository_id"], name: "index_workflow_communications_on_depository_id"
-  end
-
   create_table "workflow_declarations", force: :cascade do |t|
     t.integer "depository_id"
     t.text "body"
@@ -152,7 +143,7 @@ ActiveRecord::Schema.define(version: 2021_06_01_123434) do
     t.integer "company_id"
     t.string "keyword"
     t.integer "no_of_contacts", default: 0
-    t.string "phone"
+    t.integer "operator_id"
     t.boolean "default", default: false
     t.boolean "confidential", default: false
     t.integer "created_by_id"
@@ -162,9 +153,22 @@ ActiveRecord::Schema.define(version: 2021_06_01_123434) do
     t.index ["company_id"], name: "index_workflow_depositories_on_company_id"
     t.index ["created_by_id"], name: "index_workflow_depositories_on_created_by_id"
     t.index ["keyword"], name: "index_workflow_depositories_on_keyword"
-    t.index ["phone"], name: "index_workflow_depositories_on_phone"
+    t.index ["operator_id"], name: "index_workflow_depositories_on_operator_id"
     t.index ["status"], name: "index_workflow_depositories_on_status"
     t.index ["updated_by_id"], name: "index_workflow_depositories_on_updated_by_id"
+  end
+
+  create_table "workflow_prompts", force: :cascade do |t|
+    t.integer "depository_id"
+    t.text "body"
+    t.integer "order", default: 0
+    t.integer "created_by_id"
+    t.integer "updated_by_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["created_by_id"], name: "index_workflow_prompts_on_created_by_id"
+    t.index ["depository_id"], name: "index_workflow_prompts_on_depository_id"
+    t.index ["updated_by_id"], name: "index_workflow_prompts_on_updated_by_id"
   end
 
   add_foreign_key "platform_operators", "companies"
@@ -174,11 +178,14 @@ ActiveRecord::Schema.define(version: 2021_06_01_123434) do
   add_foreign_key "platform_recipients", "users", column: "created_by_id"
   add_foreign_key "platform_recipients", "users", column: "updated_by_id"
   add_foreign_key "users", "companies"
-  add_foreign_key "workflow_communications", "workflow_depositories", column: "depository_id"
   add_foreign_key "workflow_declarations", "users", column: "created_by_id"
   add_foreign_key "workflow_declarations", "users", column: "updated_by_id"
   add_foreign_key "workflow_declarations", "workflow_depositories", column: "depository_id"
   add_foreign_key "workflow_depositories", "companies"
+  add_foreign_key "workflow_depositories", "platform_operators", column: "operator_id"
   add_foreign_key "workflow_depositories", "users", column: "created_by_id"
   add_foreign_key "workflow_depositories", "users", column: "updated_by_id"
+  add_foreign_key "workflow_prompts", "users", column: "created_by_id"
+  add_foreign_key "workflow_prompts", "users", column: "updated_by_id"
+  add_foreign_key "workflow_prompts", "workflow_depositories", column: "depository_id"
 end

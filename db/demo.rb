@@ -5,9 +5,67 @@ class Demo
     setup_companies
     setup_users
     setup_platforms
+    setup_worflow
   end
 
   private
+
+  def setup_worflow
+    setup_workflow_depositories
+    setup_workflow_declarations
+    setup_workflow_prompts
+  end
+
+  def setup_workflow_prompts
+    puts "Creating prompts"
+    Workflow::Depository.all.each do |index|
+      (1..5).each do |i|
+        print "."
+        Workflow::Prompt.create({
+          order: i,
+          depository_id: index.id,
+          body: Faker::Lorem.paragraph,
+          created_by_id: 1,
+          updated_by_id: 1
+        })
+      end
+    end
+    puts "\nPrompts creation completed"
+  end
+
+  def setup_workflow_declarations
+    puts "Creating declarations"
+    Workflow::Depository.all.each do |depository|
+      print "."
+      Workflow::Declaration.create({
+        depository_id: depository.id,
+        destination_url: Faker::Internet.url,
+        body: Faker::Lorem.paragraph,
+        created_by_id: 1,
+        updated_by_id: 1
+      })
+    end
+    puts "\nDeclarations creation completed"
+  end
+  
+  def setup_workflow_depositories
+    puts "Creating depositories"
+    (1..100).each do |index|
+      (1..30).each do |i|
+        print "."
+        Workflow::Depository.create({
+          status: 0,
+          operator_id: Faker::Number.between(1, 10),
+          company_id: index,
+          no_of_contacts: 10,
+          keyword: Faker::Name.initials(5),
+          created_by_id: 1,
+          updated_by_id: 1
+        })
+      end
+    end
+    puts "\nDepositories creation completed"
+  end
 
   def setup_platforms
     setup_operators
@@ -17,7 +75,7 @@ class Demo
   def setup_operators
     puts "Creating operators"
     (1..100).each do |index|
-      (1..5).each do |index|
+      (1..10).each do |i|
         print "."
         Platform::Operator.create({
           status: 0,
@@ -35,7 +93,7 @@ class Demo
   def setup_recipients
     puts "Creating recipients"
     (1..100).each do |index|
-      (1..5).each do |index|
+      (1..10).each do |i|
         print "."
         Platform::Recipient.create({
           status: 0,

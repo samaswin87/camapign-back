@@ -17,7 +17,6 @@
 #  failed_attempts        | integer                        |           | not null | 0
 #  unlock_token           | character varying              |           |          |
 #  locked_at              | timestamp without time zone    |           |          |
-#  image                  | character varying              |           |          |
 #  email                  | character varying              |           |          |
 #  first_name             | character varying              |           | not null | ''::character varying
 #  middle_name            | character varying              |           |          |

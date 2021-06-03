@@ -1,0 +1,17 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  user_id: 1
+  notify_workflow: false
+  notify_menu: false
+  notify_campaign: false
+  notify_creditlimit: false
+  time_zone: MyString
+
+two:
+  user_id: 1
+  notify_workflow: false
+  notify_menu: false
+  notify_campaign: false
+  notify_creditlimit: false
+  time_zone: MyString

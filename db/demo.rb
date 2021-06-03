@@ -4,12 +4,64 @@ class Demo
   def initialize
     setup_companies
     setup_users
+    setup_user_settings
+    setup_company_settings
     setup_platforms
     setup_worflow
     setup_campaign
   end
 
   private
+
+  def setup_user_settings
+    puts "Creating user settings"
+    User.all.each do |user|
+      print "."
+      UserSetting.create({
+        user: user,
+        notify_workflow: false,
+        notify_menu: false,
+        notify_campaign: false,
+        notify_creditlimit: false,
+        time_zone: 'UTC'
+      })
+    end
+    puts "\nUser settings creation completed"
+  end
+
+  def setup_company_settings
+    puts "Creating company settings"
+    Company.all.each do |company|
+      print "."
+      CompanySetting.create({
+        company: company,
+        updated_by_id: 1,
+        messaging_platform: [0, 1].sample,
+        address: Faker::Address.full_address,
+        message_length: 300,
+        maxuser: 1000,
+        max_campaign: 1000,
+        max_workflow: 1000,
+        max_menu: 1000,
+        max_contacts_in_campaign: 1000,
+        use_short_code: true,
+        use_destination_link: true,
+        notify_credit_limit: true,
+        notify_user_creation: true,
+        notify_campaign_creation: true,
+        notify_workflow_creation: true,
+        notify_menu_creation: true,
+        sso: true,
+        import_workflows: true,
+        import_menus: true,
+        import_users: true,
+        import_contacts: true,
+        import_campaigns: true,
+        plan_end_date: 1.year.from_now,
+      })
+    end
+    puts "\nCompany settings creation completed"
+  end
 
   def setup_campaign
     setup_campaign_depositories

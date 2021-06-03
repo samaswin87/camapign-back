@@ -10,10 +10,38 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_06_02_181642) do
+ActiveRecord::Schema.define(version: 2021_06_03_052844) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "active_storage_attachments", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "record_type", null: false
+    t.bigint "record_id", null: false
+    t.bigint "blob_id", null: false
+    t.datetime "created_at", null: false
+    t.index ["blob_id"], name: "index_active_storage_attachments_on_blob_id"
+    t.index ["record_type", "record_id", "name", "blob_id"], name: "index_active_storage_attachments_uniqueness", unique: true
+  end
+
+  create_table "active_storage_blobs", force: :cascade do |t|
+    t.string "key", null: false
+    t.string "filename", null: false
+    t.string "content_type"
+    t.text "metadata"
+    t.string "service_name", null: false
+    t.bigint "byte_size", null: false
+    t.string "checksum", null: false
+    t.datetime "created_at", null: false
+    t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
+  end
+
+  create_table "active_storage_variant_records", force: :cascade do |t|
+    t.bigint "blob_id", null: false
+    t.string "variation_digest", null: false
+    t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
+  end
 
   create_table "campaign_communications", force: :cascade do |t|
     t.integer "recipient_id"
@@ -80,6 +108,40 @@ ActiveRecord::Schema.define(version: 2021_06_02_181642) do
     t.index ["status"], name: "index_companies_on_status"
   end
 
+  create_table "company_settings", force: :cascade do |t|
+    t.integer "messaging_platform", default: 0
+    t.text "address"
+    t.string "batch_process_default_time", default: "12:00 AM UTC"
+    t.string "time_zone", default: "UTC"
+    t.integer "company_id"
+    t.integer "message_length", default: 0
+    t.integer "maxuser", default: 0
+    t.integer "max_campaign", default: 0
+    t.integer "max_workflow", default: 0
+    t.integer "max_menu", default: 0
+    t.integer "max_contacts_in_campaign", default: 0
+    t.boolean "use_short_code", default: false
+    t.boolean "use_destination_link", default: false
+    t.boolean "notify_credit_limit", default: false
+    t.boolean "notify_user_creation", default: false
+    t.boolean "notify_campaign_creation", default: false
+    t.boolean "notify_workflow_creation", default: false
+    t.boolean "notify_menu_creation", default: false
+    t.boolean "sso", default: false
+    t.boolean "import_workflows", default: false
+    t.boolean "import_menus", default: false
+    t.boolean "import_users", default: false
+    t.boolean "import_contacts", default: false
+    t.boolean "import_campaigns", default: false
+    t.date "plan_start_date", default: "2021-06-03"
+    t.date "plan_end_date"
+    t.integer "updated_by_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["company_id"], name: "index_company_settings_on_company_id"
+    t.index ["updated_by_id"], name: "index_company_settings_on_updated_by_id"
+  end
+
   create_table "platform_operators", force: :cascade do |t|
     t.integer "status", default: 0
     t.string "phone"
@@ -127,6 +189,18 @@ ActiveRecord::Schema.define(version: 2021_06_02_181642) do
     t.index ["updated_by_id"], name: "index_platform_recipients_on_updated_by_id"
   end
 
+  create_table "user_settings", force: :cascade do |t|
+    t.integer "user_id"
+    t.boolean "notify_workflow", default: false
+    t.boolean "notify_menu", default: false
+    t.boolean "notify_campaign", default: false
+    t.boolean "notify_creditlimit", default: false
+    t.string "time_zone", default: "UTC"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["user_id"], name: "index_user_settings_on_user_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "provider", default: "email", null: false
     t.string "uid", default: "", null: false
@@ -142,7 +216,6 @@ ActiveRecord::Schema.define(version: 2021_06_02_181642) do
     t.integer "failed_attempts", default: 0, null: false
     t.string "unlock_token"
     t.datetime "locked_at"
-    t.string "image"
     t.string "email"
     t.string "first_name", default: "", null: false
     t.string "middle_name"
@@ -237,15 +310,20 @@ ActiveRecord::Schema.define(version: 2021_06_02_181642) do
     t.index ["recipient_id"], name: "index_workflow_recipients_on_recipient_id"
   end
 
+  add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "campaign_communications", "campaign_recipients", column: "recipient_id"
   add_foreign_key "campaign_depositories", "companies"
   add_foreign_key "campaign_depositories", "platform_operators", column: "operator_id"
+  add_foreign_key "company_settings", "companies"
+  add_foreign_key "company_settings", "users", column: "updated_by_id"
   add_foreign_key "platform_operators", "companies"
   add_foreign_key "platform_operators", "users", column: "created_by_id"
   add_foreign_key "platform_operators", "users", column: "updated_by_id"
   add_foreign_key "platform_recipients", "companies"
   add_foreign_key "platform_recipients", "users", column: "created_by_id"
   add_foreign_key "platform_recipients", "users", column: "updated_by_id"
+  add_foreign_key "user_settings", "users"
   add_foreign_key "users", "companies"
   add_foreign_key "workflow_communications", "workflow_recipients", column: "recipient_id"
   add_foreign_key "workflow_declarations", "users", column: "created_by_id"

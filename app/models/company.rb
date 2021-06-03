@@ -21,6 +21,7 @@ class Company < ApplicationRecord
     enum plan: [:tentative, :lite, :plus, :premium, :ultimate]
     enum status: [:active, :inactive]
 
+    has_one :setting, class_name: 'CompanySetting'
     has_many :users
     has_many :operators, class_name: 'Platform::Operator'
     has_many :recipients, class_name: 'Platform::Recipient'

@@ -10,10 +10,44 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_06_02_165950) do
+ActiveRecord::Schema.define(version: 2021_06_02_181642) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "campaign_communications", force: :cascade do |t|
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "campaign_depositories", force: :cascade do |t|
+    t.integer "status", default: 0
+    t.integer "company_id"
+    t.integer "no_of_contacts", default: 0
+    t.integer "operator_id"
+    t.string "name"
+    t.text "message"
+    t.integer "group", default: 0
+    t.datetime "scheduled_at"
+    t.time "recurring_at"
+    t.string "recurring_days", default: [], array: true
+    t.integer "created_by_id"
+    t.integer "updated_by_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["company_id"], name: "index_campaign_depositories_on_company_id"
+    t.index ["created_by_id"], name: "index_campaign_depositories_on_created_by_id"
+    t.index ["group"], name: "index_campaign_depositories_on_group"
+    t.index ["name"], name: "index_campaign_depositories_on_name", unique: true
+    t.index ["operator_id"], name: "index_campaign_depositories_on_operator_id"
+    t.index ["status"], name: "index_campaign_depositories_on_status"
+    t.index ["updated_by_id"], name: "index_campaign_depositories_on_updated_by_id"
+  end
+
+  create_table "campaign_recipients", force: :cascade do |t|
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
 
   create_table "companies", force: :cascade do |t|
     t.string "name", null: false
@@ -194,6 +228,8 @@ ActiveRecord::Schema.define(version: 2021_06_02_165950) do
     t.index ["recipient_id"], name: "index_workflow_recipients_on_recipient_id"
   end
 
+  add_foreign_key "campaign_depositories", "companies"
+  add_foreign_key "campaign_depositories", "platform_operators", column: "operator_id"
   add_foreign_key "platform_operators", "companies"
   add_foreign_key "platform_operators", "users", column: "created_by_id"
   add_foreign_key "platform_operators", "users", column: "updated_by_id"

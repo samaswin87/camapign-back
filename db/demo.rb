@@ -6,9 +6,38 @@ class Demo
     setup_users
     setup_platforms
     setup_worflow
+    setup_campaign
   end
 
   private
+
+  def setup_campaign
+    setup_campaign_depositories
+  end
+
+  def setup_campaign_depositories
+    puts "Creating campaign depositories"
+    (1..10).each do |index|
+      (1..10).each do |i|
+        print "."
+        Campaign::Depository.create({
+          status: [0, 1].sample,
+          operator_id: Faker::Number.between(1, 10),
+          company_id: index,
+          no_of_contacts: 10,
+          name: Faker::Name.unique.name,
+          message: Faker::Lorem.paragraph,
+          group: [0, 1, 2].sample,
+          scheduled_at: Time.now,
+          recurring_at: Time.now,
+          recurring_days: ['Mon', 'Tue'],
+          created_by_id: 1,
+          updated_by_id: 1
+        })
+      end
+    end
+    puts "\nCampaign depositories creation completed"
+  end
 
   def setup_worflow
     setup_workflow_depositories

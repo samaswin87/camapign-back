@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_06_03_113546) do
+ActiveRecord::Schema.define(version: 2021_06_03_113927) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -172,6 +172,75 @@ ActiveRecord::Schema.define(version: 2021_06_03_113546) do
     t.datetime "updated_at", precision: 6, null: false
     t.index ["company_id"], name: "index_company_settings_on_company_id"
     t.index ["updated_by_id"], name: "index_company_settings_on_updated_by_id"
+  end
+
+  create_table "menu_communications", force: :cascade do |t|
+    t.integer "status", default: 0
+    t.integer "recipient_id"
+    t.text "message"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["recipient_id"], name: "index_menu_communications_on_recipient_id"
+  end
+
+  create_table "menu_declarations", force: :cascade do |t|
+    t.integer "depository_id"
+    t.text "body"
+    t.string "destination_url"
+    t.integer "created_by_id"
+    t.integer "updated_by_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["created_by_id"], name: "index_menu_declarations_on_created_by_id"
+    t.index ["depository_id"], name: "index_menu_declarations_on_depository_id"
+    t.index ["updated_by_id"], name: "index_menu_declarations_on_updated_by_id"
+  end
+
+  create_table "menu_depositories", force: :cascade do |t|
+    t.integer "status", default: 0
+    t.integer "company_id"
+    t.string "keyword"
+    t.integer "no_of_contacts", default: 0
+    t.integer "operator_id"
+    t.boolean "default", default: false
+    t.boolean "confidential", default: false
+    t.integer "created_by_id"
+    t.integer "updated_by_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["company_id"], name: "index_menu_depositories_on_company_id"
+    t.index ["created_by_id"], name: "index_menu_depositories_on_created_by_id"
+    t.index ["keyword"], name: "index_menu_depositories_on_keyword"
+    t.index ["operator_id"], name: "index_menu_depositories_on_operator_id"
+    t.index ["status"], name: "index_menu_depositories_on_status"
+    t.index ["updated_by_id"], name: "index_menu_depositories_on_updated_by_id"
+  end
+
+  create_table "menu_prompts", force: :cascade do |t|
+    t.integer "depository_id"
+    t.text "body"
+    t.integer "order", default: 0
+    t.integer "created_by_id"
+    t.integer "updated_by_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["created_by_id"], name: "index_menu_prompts_on_created_by_id"
+    t.index ["depository_id"], name: "index_menu_prompts_on_depository_id"
+    t.index ["updated_by_id"], name: "index_menu_prompts_on_updated_by_id"
+  end
+
+  create_table "menu_recipients", force: :cascade do |t|
+    t.integer "depository_id"
+    t.integer "recipient_id"
+    t.integer "status", default: 0
+    t.integer "progress", default: 0
+    t.datetime "reply_at"
+    t.datetime "archived_at"
+    t.datetime "completed_at"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["depository_id"], name: "index_menu_recipients_on_depository_id"
+    t.index ["recipient_id"], name: "index_menu_recipients_on_recipient_id"
   end
 
   create_table "platform_operators", force: :cascade do |t|
@@ -371,6 +440,19 @@ ActiveRecord::Schema.define(version: 2021_06_03_113546) do
   add_foreign_key "company_referrals", "companies"
   add_foreign_key "company_settings", "companies"
   add_foreign_key "company_settings", "users", column: "updated_by_id"
+  add_foreign_key "menu_communications", "menu_recipients", column: "recipient_id"
+  add_foreign_key "menu_declarations", "menu_depositories", column: "depository_id"
+  add_foreign_key "menu_declarations", "users", column: "created_by_id"
+  add_foreign_key "menu_declarations", "users", column: "updated_by_id"
+  add_foreign_key "menu_depositories", "companies"
+  add_foreign_key "menu_depositories", "platform_operators", column: "operator_id"
+  add_foreign_key "menu_depositories", "users", column: "created_by_id"
+  add_foreign_key "menu_depositories", "users", column: "updated_by_id"
+  add_foreign_key "menu_prompts", "menu_depositories", column: "depository_id"
+  add_foreign_key "menu_prompts", "users", column: "created_by_id"
+  add_foreign_key "menu_prompts", "users", column: "updated_by_id"
+  add_foreign_key "menu_recipients", "menu_depositories", column: "depository_id"
+  add_foreign_key "menu_recipients", "platform_recipients", column: "recipient_id"
   add_foreign_key "platform_operators", "companies"
   add_foreign_key "platform_operators", "users", column: "created_by_id"
   add_foreign_key "platform_operators", "users", column: "updated_by_id"

@@ -23,5 +23,6 @@ module Workflow
         belongs_to :operator, class_name: 'Platform::Operator'
         has_one :declaration, class_name: 'Workflow::Declaration'
         has_many :recipients, class_name: 'Workflow::Recipient'
+        has_many :communications, through: :recipients
     end
 end

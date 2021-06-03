@@ -16,8 +16,12 @@ ActiveRecord::Schema.define(version: 2021_06_02_181642) do
   enable_extension "plpgsql"
 
   create_table "campaign_communications", force: :cascade do |t|
+    t.integer "recipient_id"
+    t.text "message"
+    t.integer "delivery", default: 0
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.index ["recipient_id"], name: "index_campaign_communications_on_recipient_id"
   end
 
   create_table "campaign_depositories", force: :cascade do |t|
@@ -167,7 +171,7 @@ ActiveRecord::Schema.define(version: 2021_06_02_181642) do
   create_table "workflow_communications", force: :cascade do |t|
     t.integer "status", default: 0
     t.integer "recipient_id"
-    t.string "message"
+    t.text "message"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["recipient_id"], name: "index_workflow_communications_on_recipient_id"
@@ -233,6 +237,7 @@ ActiveRecord::Schema.define(version: 2021_06_02_181642) do
     t.index ["recipient_id"], name: "index_workflow_recipients_on_recipient_id"
   end
 
+  add_foreign_key "campaign_communications", "campaign_recipients", column: "recipient_id"
   add_foreign_key "campaign_depositories", "companies"
   add_foreign_key "campaign_depositories", "platform_operators", column: "operator_id"
   add_foreign_key "platform_operators", "companies"

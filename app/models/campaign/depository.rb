@@ -27,5 +27,7 @@ module Campaign
 
     belongs_to :company
     belongs_to :operator, class_name: 'Platform::Operator'
+    has_many :recipients, class_name: 'Campaign::Recipient'
+    has_many :communications, through: :recipients
   end
 end

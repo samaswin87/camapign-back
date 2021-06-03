@@ -14,6 +14,7 @@ class Demo
   def setup_campaign
     setup_campaign_depositories
     setup_campaign_recipients
+    setup_campaign_communications
   end
 
   def setup_campaign_recipients
@@ -56,6 +57,21 @@ class Demo
     puts "\nCampaign depositories creation completed"
   end
 
+  def setup_campaign_communications
+    puts "Creating Campaign communications"
+    Campaign::Recipient.all.each do |recipient|
+      (1..5).each do |i|
+        print "."
+        Campaign::Communication.create({
+          delivery: [0, 1, 2, 3].sample,
+          recipient_id: recipient.id,
+          message: Faker::Lorem.paragraph,
+        })
+      end
+    end
+    puts "\nCampaign communications creation completed"
+  end
+
   def setup_worflow
     setup_workflow_depositories
     setup_workflow_declarations
@@ -67,11 +83,14 @@ class Demo
   def setup_workflow_communications
     puts "Creating communications"
     Workflow::Recipient.all.each do |recipient|
-      print "."
-      Workflow::Communication.create({
-        recipient_id: recipient.id,
-        message: Faker::Lorem.paragraph,
-      })
+      (1..5).each do |i|
+        print "."
+        Workflow::Communication.create({
+          delivery: [0, 1, 2, 3].sample,
+          recipient_id: recipient.id,
+          message: Faker::Lorem.paragraph,
+        })
+      end
     end
     puts "\nCommunications creation completed"
   end
@@ -82,6 +101,7 @@ class Demo
       (1..10).each do |i|
         print "."
         Workflow::Recipient.create({
+          status: [0, 1].sample,
           depository_id: depository.id,
           recipient_id: i,
         })

@@ -16,5 +16,6 @@ module Campaign
 
     belongs_to :depository, class_name: 'Campaign::Depository'
     belongs_to :platform_recipient, foreign_key: :recipient_id, class_name: 'Platform::Recipient'
+    has_many :communications, class_name: 'Campaign::Communication'
   end
 end

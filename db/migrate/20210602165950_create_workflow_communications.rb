@@ -3,7 +3,7 @@ class CreateWorkflowCommunications < ActiveRecord::Migration[6.1]
     create_table :workflow_communications do |t|
       t.integer :status, default: 0
       t.integer :recipient_id
-      t.string :message
+      t.text :message
 
       t.timestamps
     end

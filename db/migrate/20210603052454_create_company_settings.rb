@@ -1,7 +1,6 @@
 class CreateCompanySettings < ActiveRecord::Migration[6.1]
   def change
     create_table :company_settings do |t|
-      t.integer :messaging_platform, default: 0
       t.text :address
       t.string :batch_process_default_time, default: '12:00 AM UTC'
       t.string :time_zone, default: 'UTC'
@@ -25,7 +24,7 @@ class CreateCompanySettings < ActiveRecord::Migration[6.1]
       t.boolean :import_users, default: false
       t.boolean :import_contacts, default: false
       t.boolean :import_campaigns, default: false
-      t.date :plan_start_date, default: Time.now
+      t.date :plan_start_date
       t.date :plan_end_date
       t.integer :updated_by_id
 

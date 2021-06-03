@@ -6,12 +6,38 @@ class Demo
     setup_users
     setup_user_settings
     setup_company_settings
+    setup_company_plans
     setup_platforms
     setup_worflow
     setup_campaign
   end
 
   private
+
+  def setup_company_plans
+    puts "Creating company plans"
+    Company.all.each do |company|
+      print "."
+      ['JAN-2021', 'FEB-2021', 'MAR-2021', 'APR-2021', 'MAY-2021', 'JUN-2021', 'JUL-2021', 'AUG-2021', 'SEP-2021', 'OCT-2021', 'NOV-2021', 'DEC-2021'].each do |month|
+        CompanyPlan.create({
+          company_id: company.id,
+          month: month,
+          credits: Faker::Number.between(1000, 2000),
+          additional_credits: Faker::Number.between(1000, 2000),
+          inbounds: Faker::Number.between(100, 200),
+          outbounds: Faker::Number.between(100, 200),
+          voice_inbounds: Faker::Number.between(100, 200),
+          voice_outbounds: Faker::Number.between(100, 200),
+          availed_inbounds: Faker::Number.between(100, 200),
+          availed_outbounds: Faker::Number.between(100, 200),
+          availed_voice_inbounds: Faker::Number.between(100, 200),
+          availed_voice_outbounds: Faker::Number.between(100, 200),
+        })
+      end
+    end
+    puts "\nCompany plans creation completed"
+  end
+
 
   def setup_user_settings
     puts "Creating user settings"
@@ -36,7 +62,6 @@ class Demo
       CompanySetting.create({
         company: company,
         updated_by_id: 1,
-        messaging_platform: [0, 1].sample,
         address: Faker::Address.full_address,
         message_length: 300,
         maxuser: 1000,
@@ -57,6 +82,7 @@ class Demo
         import_users: true,
         import_contacts: true,
         import_campaigns: true,
+        plan_start_date: Time.now,
         plan_end_date: 1.year.from_now,
       })
     end

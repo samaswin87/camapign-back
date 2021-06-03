@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_06_03_052844) do
+ActiveRecord::Schema.define(version: 2021_06_03_091048) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -108,8 +108,25 @@ ActiveRecord::Schema.define(version: 2021_06_03_052844) do
     t.index ["status"], name: "index_companies_on_status"
   end
 
+  create_table "company_plans", force: :cascade do |t|
+    t.integer "company_id"
+    t.string "month"
+    t.integer "credits", default: 0
+    t.integer "additional_credits", default: 0
+    t.integer "inbounds", default: 0
+    t.integer "outbounds", default: 0
+    t.integer "voice_inbounds", default: 0
+    t.integer "voice_outbounds", default: 0
+    t.integer "availed_inbounds", default: 0
+    t.integer "availed_outbounds", default: 0
+    t.integer "availed_voice_inbounds", default: 0
+    t.integer "availed_voice_outbounds", default: 0
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["company_id"], name: "index_company_plans_on_company_id"
+  end
+
   create_table "company_settings", force: :cascade do |t|
-    t.integer "messaging_platform", default: 0
     t.text "address"
     t.string "batch_process_default_time", default: "12:00 AM UTC"
     t.string "time_zone", default: "UTC"
@@ -133,7 +150,7 @@ ActiveRecord::Schema.define(version: 2021_06_03_052844) do
     t.boolean "import_users", default: false
     t.boolean "import_contacts", default: false
     t.boolean "import_campaigns", default: false
-    t.date "plan_start_date", default: "2021-06-03"
+    t.date "plan_start_date"
     t.date "plan_end_date"
     t.integer "updated_by_id"
     t.datetime "created_at", precision: 6, null: false
@@ -315,6 +332,7 @@ ActiveRecord::Schema.define(version: 2021_06_03_052844) do
   add_foreign_key "campaign_communications", "campaign_recipients", column: "recipient_id"
   add_foreign_key "campaign_depositories", "companies"
   add_foreign_key "campaign_depositories", "platform_operators", column: "operator_id"
+  add_foreign_key "company_plans", "companies"
   add_foreign_key "company_settings", "companies"
   add_foreign_key "company_settings", "users", column: "updated_by_id"
   add_foreign_key "platform_operators", "companies"

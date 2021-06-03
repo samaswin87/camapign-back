@@ -1,0 +1,29 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  company_id: 1
+  month: MyString
+  credits: 1
+  additional_credits: 1
+  inbounds: 1
+  outbounds: 1
+  voice_inbounds: 1
+  voice_outbounds: 1
+  availed_inbounds: 1
+  availed_outbounds: 1
+  availed_voice_inbounds: 1
+  availed_voice_outbounds: 1
+
+two:
+  company_id: 1
+  month: MyString
+  credits: 1
+  additional_credits: 1
+  inbounds: 1
+  outbounds: 1
+  voice_inbounds: 1
+  voice_outbounds: 1
+  availed_inbounds: 1
+  availed_outbounds: 1
+  availed_voice_inbounds: 1
+  availed_voice_outbounds: 1

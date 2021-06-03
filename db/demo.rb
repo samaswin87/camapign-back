@@ -13,6 +13,23 @@ class Demo
 
   def setup_campaign
     setup_campaign_depositories
+    setup_campaign_recipients
+  end
+
+  def setup_campaign_recipients
+    puts "Creating Campaign recipients"
+    Workflow::Depository.all.each do |depository|
+      (1..10).each do |i|
+        print "."
+        Campaign::Recipient.create({
+          status: [0, 1].sample,
+          depository_id: depository.id,
+          recipient_id: i,
+          data: Faker::Json.shallow_json(3, { key: 'Name.first_name', value: 'Name.last_name' })
+        })
+      end
+    end
+    puts "\nCampaign recipients creation completed"
   end
 
   def setup_campaign_depositories

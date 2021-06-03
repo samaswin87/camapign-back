@@ -45,6 +45,11 @@ ActiveRecord::Schema.define(version: 2021_06_02_181642) do
   end
 
   create_table "campaign_recipients", force: :cascade do |t|
+    t.integer "status", default: 0
+    t.integer "recipient_id"
+    t.integer "depository_id"
+    t.datetime "archived_at"
+    t.jsonb "data", default: {}
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end

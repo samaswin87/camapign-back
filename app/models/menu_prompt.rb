@@ -1,2 +1,0 @@
-class MenuPrompt < ApplicationRecord
-end

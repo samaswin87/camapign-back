@@ -1,2 +1,0 @@
-class MenuCommunication < ApplicationRecord
-end

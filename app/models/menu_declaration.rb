@@ -1,2 +1,0 @@
-class MenuDeclaration < ApplicationRecord
-end

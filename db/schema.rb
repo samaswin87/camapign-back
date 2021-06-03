@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_06_03_113927) do
+ActiveRecord::Schema.define(version: 2021_06_03_131223) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -124,6 +124,7 @@ ActiveRecord::Schema.define(version: 2021_06_03_113927) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["company_id"], name: "index_company_plans_on_company_id"
+    t.index ["month"], name: "index_company_plans_on_month"
   end
 
   create_table "company_referrals", force: :cascade do |t|
@@ -288,6 +289,55 @@ ActiveRecord::Schema.define(version: 2021_06_03_113927) do
     t.index ["phone"], name: "index_platform_recipients_on_phone"
     t.index ["status"], name: "index_platform_recipients_on_status"
     t.index ["updated_by_id"], name: "index_platform_recipients_on_updated_by_id"
+  end
+
+  create_table "survey_depositories", force: :cascade do |t|
+    t.integer "company_id"
+    t.integer "status", default: 0
+    t.string "name"
+    t.string "description"
+    t.integer "created_by_id"
+    t.integer "updated_by_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["company_id"], name: "index_survey_depositories_on_company_id"
+    t.index ["created_by_id"], name: "index_survey_depositories_on_created_by_id"
+    t.index ["name"], name: "index_survey_depositories_on_name"
+    t.index ["updated_by_id"], name: "index_survey_depositories_on_updated_by_id"
+  end
+
+  create_table "survey_outcomes", force: :cascade do |t|
+    t.integer "depository_id"
+    t.integer "prompt_id"
+    t.boolean "choice1", default: false
+    t.boolean "choice2", default: false
+    t.boolean "choice3", default: false
+    t.boolean "choice4", default: false
+    t.boolean "choice5", default: false
+    t.integer "recipient_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["depository_id"], name: "index_survey_outcomes_on_depository_id"
+    t.index ["prompt_id"], name: "index_survey_outcomes_on_prompt_id"
+    t.index ["recipient_id"], name: "index_survey_outcomes_on_recipient_id"
+  end
+
+  create_table "survey_prompts", force: :cascade do |t|
+    t.integer "depository_id"
+    t.integer "order", default: 0
+    t.text "description"
+    t.string "choice1"
+    t.string "choice2"
+    t.string "choice3"
+    t.string "choice4"
+    t.string "choice5"
+    t.integer "created_by_id"
+    t.integer "updated_by_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["created_by_id"], name: "index_survey_prompts_on_created_by_id"
+    t.index ["depository_id"], name: "index_survey_prompts_on_depository_id"
+    t.index ["updated_by_id"], name: "index_survey_prompts_on_updated_by_id"
   end
 
   create_table "tags", force: :cascade do |t|
@@ -459,6 +509,15 @@ ActiveRecord::Schema.define(version: 2021_06_03_113927) do
   add_foreign_key "platform_recipients", "companies"
   add_foreign_key "platform_recipients", "users", column: "created_by_id"
   add_foreign_key "platform_recipients", "users", column: "updated_by_id"
+  add_foreign_key "survey_depositories", "companies"
+  add_foreign_key "survey_depositories", "users", column: "created_by_id"
+  add_foreign_key "survey_depositories", "users", column: "updated_by_id"
+  add_foreign_key "survey_outcomes", "platform_recipients", column: "recipient_id"
+  add_foreign_key "survey_outcomes", "survey_depositories", column: "depository_id"
+  add_foreign_key "survey_outcomes", "survey_prompts", column: "prompt_id"
+  add_foreign_key "survey_prompts", "survey_depositories", column: "depository_id"
+  add_foreign_key "survey_prompts", "users", column: "created_by_id"
+  add_foreign_key "survey_prompts", "users", column: "updated_by_id"
   add_foreign_key "tags", "companies"
   add_foreign_key "timelines", "users"
   add_foreign_key "user_settings", "users"

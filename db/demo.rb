@@ -8,11 +8,101 @@ class Demo
     setup_company_settings
     setup_company_plans
     setup_platforms
-    setup_worflow
+    setup_workflow
     setup_campaign
+    setup_menu
   end
 
   private
+
+  def setup_menu
+    setup_menu_depositories
+    setup_menu_declarations
+    setup_menu_prompts
+    setup_menu_recipients
+    setup_menu_communications
+  end
+  
+  def setup_menu_communications
+    puts "Creating menu communications"
+    Menu::Recipient.all.each do |recipient|
+      (1..5).each do |i|
+        print "."
+        Menu::Communication.create({
+          delivery: [0, 1, 2, 3].sample,
+          recipient_id: recipient.id,
+          message: Faker::Lorem.paragraph,
+        })
+      end
+    end
+    puts "\nMenu communications creation completed"
+  end
+  
+  def setup_menu_recipients
+    puts "Creating menu recipients"
+    Menu::Depository.all.each do |depository|
+      (1..10).each do |i|
+        print "."
+        Menu::Recipient.create({
+          status: [0, 1].sample,
+          depository_id: depository.id,
+          recipient_id: i,
+        })
+      end
+    end
+    puts "\nMenu recipients creation completed"
+  end
+  
+  def setup_menu_prompts
+    puts "Creating menu prompts"
+    Menu::Depository.all.each do |depository|
+      (1..5).each do |i|
+        print "."
+        Menu::Prompt.create({
+          order: i,
+          depository_id: depository.id,
+          body: Faker::Lorem.paragraph,
+          created_by_id: 1,
+          updated_by_id: 1
+        })
+      end
+    end
+    puts "\nMenu prompts creation completed"
+  end
+  
+  def setup_menu_declarations
+    puts "Creating menu declarations"
+    Menu::Depository.all.each do |depository|
+      print "."
+      Menu::Declaration.create({
+        depository_id: depository.id,
+        destination_url: Faker::Internet.url,
+        body: Faker::Lorem.paragraph,
+        created_by_id: 1,
+        updated_by_id: 1
+      })
+    end
+    puts "\nMenu declarations creation completed"
+  end
+  
+  def setup_menu_depositories
+    puts "Creating menu depositories"
+    (1..10).each do |index|
+      (1..10).each do |i|
+        print "."
+        Menu::Depository.create({
+          status: 0,
+          operator_id: Faker::Number.between(1, 10),
+          company_id: index,
+          no_of_contacts: 10,
+          keyword: Faker::Name.initials(5),
+          created_by_id: 1,
+          updated_by_id: 1
+        })
+      end
+    end
+    puts "\nMenu depositories creation completed"
+  end
 
   def setup_company_plans
     puts "Creating company plans"
@@ -150,7 +240,7 @@ class Demo
     puts "\nCampaign communications creation completed"
   end
 
-  def setup_worflow
+  def setup_workflow
     setup_workflow_depositories
     setup_workflow_declarations
     setup_workflow_prompts
@@ -159,7 +249,7 @@ class Demo
   end
 
   def setup_workflow_communications
-    puts "Creating communications"
+    puts "Creating workflow communications"
     Workflow::Recipient.all.each do |recipient|
       (1..5).each do |i|
         print "."
@@ -170,11 +260,11 @@ class Demo
         })
       end
     end
-    puts "\nCommunications creation completed"
+    puts "\nWorkflow communications creation completed"
   end
 
   def setup_workflow_recipients
-    puts "Creating recipients"
+    puts "Creating workflow recipients"
     Workflow::Depository.all.each do |depository|
       (1..10).each do |i|
         print "."
@@ -185,11 +275,11 @@ class Demo
         })
       end
     end
-    puts "\nRecipients creation completed"
+    puts "\nWorkflow recipients creation completed"
   end
 
   def setup_workflow_prompts
-    puts "Creating prompts"
+    puts "Creating workflow prompts"
     Workflow::Depository.all.each do |depository|
       (1..5).each do |i|
         print "."
@@ -202,11 +292,11 @@ class Demo
         })
       end
     end
-    puts "\nPrompts creation completed"
+    puts "\nWorkflow prompts creation completed"
   end
 
   def setup_workflow_declarations
-    puts "Creating declarations"
+    puts "Creating workflow declarations"
     Workflow::Depository.all.each do |depository|
       print "."
       Workflow::Declaration.create({
@@ -217,11 +307,11 @@ class Demo
         updated_by_id: 1
       })
     end
-    puts "\nDeclarations creation completed"
+    puts "\nWorkflow declarations creation completed"
   end
   
   def setup_workflow_depositories
-    puts "Creating depositories"
+    puts "Creating workflow depositories"
     (1..10).each do |index|
       (1..10).each do |i|
         print "."
@@ -236,7 +326,7 @@ class Demo
         })
       end
     end
-    puts "\nDepositories creation completed"
+    puts "\nWorkflow depositories creation completed"
   end
 
   def setup_platforms

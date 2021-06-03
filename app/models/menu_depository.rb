@@ -1,0 +1,2 @@
+class MenuDepository < ApplicationRecord
+end

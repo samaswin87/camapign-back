@@ -1,0 +1,13 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  company_id: 1
+  status: 1
+  name: MyString
+  archived_at: 2021-06-03 17:00:47
+
+two:
+  company_id: 1
+  status: 1
+  name: MyString
+  archived_at: 2021-06-03 17:00:47

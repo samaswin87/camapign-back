@@ -1,0 +1,2 @@
+class CompanyReferral < ApplicationRecord
+end

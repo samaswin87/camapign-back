@@ -47,4 +47,6 @@ class User < ApplicationRecord
   enum role: [:admin, :user]
 
   belongs_to :company
+  
+  has_many :timelines
 end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_06_03_091048) do
+ActiveRecord::Schema.define(version: 2021_06_03_113351) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -206,6 +206,26 @@ ActiveRecord::Schema.define(version: 2021_06_03_091048) do
     t.index ["updated_by_id"], name: "index_platform_recipients_on_updated_by_id"
   end
 
+  create_table "tags", force: :cascade do |t|
+    t.integer "company_id"
+    t.integer "status", default: 0
+    t.string "name"
+    t.datetime "archived_at"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["company_id"], name: "index_tags_on_company_id"
+    t.index ["name"], name: "index_tags_on_name"
+  end
+
+  create_table "timelines", force: :cascade do |t|
+    t.integer "user_id"
+    t.string "title"
+    t.string "description"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["user_id"], name: "index_timelines_on_user_id"
+  end
+
   create_table "user_settings", force: :cascade do |t|
     t.integer "user_id"
     t.boolean "notify_workflow", default: false
@@ -341,6 +361,8 @@ ActiveRecord::Schema.define(version: 2021_06_03_091048) do
   add_foreign_key "platform_recipients", "companies"
   add_foreign_key "platform_recipients", "users", column: "created_by_id"
   add_foreign_key "platform_recipients", "users", column: "updated_by_id"
+  add_foreign_key "tags", "companies"
+  add_foreign_key "timelines", "users"
   add_foreign_key "user_settings", "users"
   add_foreign_key "users", "companies"
   add_foreign_key "workflow_communications", "workflow_recipients", column: "recipient_id"

@@ -17,6 +17,7 @@ class CreateCompanyPlans < ActiveRecord::Migration[6.1]
       t.timestamps
     end
     add_index :company_plans, :company_id
+    add_index :company_plans, :month
 
     add_foreign_key :company_plans, :companies, column: :company_id
   end

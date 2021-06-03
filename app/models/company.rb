@@ -26,4 +26,6 @@ class Company < ApplicationRecord
     has_many :operators, class_name: 'Platform::Operator'
     has_many :recipients, class_name: 'Platform::Recipient'
     has_many :depositories, class_name: 'Workflow::Depository'
+    has_many :plans, class_name: 'CompanyPlan'
+    has_one :current_plan, -> {  where('month = ?', Date.today.strftime("%b-%Y")) }, class_name: 'CompanyPlan'
 end

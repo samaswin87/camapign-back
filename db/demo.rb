@@ -18,7 +18,7 @@ class Demo
     puts "Creating company plans"
     Company.all.each do |company|
       print "."
-      ['JAN-2021', 'FEB-2021', 'MAR-2021', 'APR-2021', 'MAY-2021', 'JUN-2021', 'JUL-2021', 'AUG-2021', 'SEP-2021', 'OCT-2021', 'NOV-2021', 'DEC-2021'].each do |month|
+      ['Jan-2021', 'Feb-2021', 'Mar-2021', 'Apr-2021', 'May-2021', 'Jun-2021', 'Jul-2021', 'Aug-2021', 'Sep-2021', 'Oct-2021', 'Nov-2021', 'Dec-2021'].each do |month|
         CompanyPlan.create({
           company_id: company.id,
           month: month,

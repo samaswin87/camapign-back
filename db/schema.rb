@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_06_03_113351) do
+ActiveRecord::Schema.define(version: 2021_06_03_113546) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -124,6 +124,21 @@ ActiveRecord::Schema.define(version: 2021_06_03_113351) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["company_id"], name: "index_company_plans_on_company_id"
+  end
+
+  create_table "company_referrals", force: :cascade do |t|
+    t.integer "company_id"
+    t.integer "status", default: 0
+    t.string "name"
+    t.string "email"
+    t.string "phone"
+    t.string "description"
+    t.string "contact_person"
+    t.string "referral_code"
+    t.integer "free_credits", default: 0
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["company_id"], name: "index_company_referrals_on_company_id"
   end
 
   create_table "company_settings", force: :cascade do |t|
@@ -353,6 +368,7 @@ ActiveRecord::Schema.define(version: 2021_06_03_113351) do
   add_foreign_key "campaign_depositories", "companies"
   add_foreign_key "campaign_depositories", "platform_operators", column: "operator_id"
   add_foreign_key "company_plans", "companies"
+  add_foreign_key "company_referrals", "companies"
   add_foreign_key "company_settings", "companies"
   add_foreign_key "company_settings", "users", column: "updated_by_id"
   add_foreign_key "platform_operators", "companies"

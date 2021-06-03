@@ -30,4 +30,5 @@ class Company < ApplicationRecord
     has_many :depositories, class_name: 'Workflow::Depository'
     has_many :plans, class_name: 'CompanyPlan'
     has_many :tags
+    has_many :referrals, class_name: 'CompanyReferral'
 end

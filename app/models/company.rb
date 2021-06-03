@@ -31,4 +31,5 @@ class Company < ApplicationRecord
     has_many :plans, class_name: 'CompanyPlan'
     has_many :tags
     has_many :referrals, class_name: 'CompanyReferral'
+    has_many :access_rights
 end

@@ -1,0 +1,23 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  module_name: MyString
+  create: false
+  show: false
+  list: false
+  edit: false
+  menu: false
+  logo: MyString
+  source: one
+  source_type: Source
+
+two:
+  module_name: MyString
+  create: false
+  show: false
+  list: false
+  edit: false
+  menu: false
+  logo: MyString
+  source: two
+  source_type: Source

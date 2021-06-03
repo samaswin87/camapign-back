@@ -49,4 +49,5 @@ class User < ApplicationRecord
   belongs_to :company
   
   has_many :timelines
+  has_many :access_rights
 end

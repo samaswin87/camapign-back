@@ -10,10 +10,25 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_06_03_131223) do
+ActiveRecord::Schema.define(version: 2021_06_03_134848) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "access_rights", force: :cascade do |t|
+    t.string "module_name"
+    t.boolean "create", default: false
+    t.boolean "show", default: false
+    t.boolean "list", default: false
+    t.boolean "edit", default: false
+    t.boolean "menu", default: false
+    t.string "logo"
+    t.string "source_type", null: false
+    t.bigint "source_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["source_type", "source_id"], name: "index_access_rights_on_source"
+  end
 
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false

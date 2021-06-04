@@ -42,7 +42,7 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
 gem 'devise_token_auth', '~> 1.1.5'
 gem 'omniauth', '~> 2.0', '>= 2.0.4'
-gem 'pagy', '~> 3.5' # omit patch digit and use the latest if possible
+gem 'pagy', '~> 3.5'
 gem 'active_model_serializers', '~> 0.10.0'
 gem 'pager_api', '~> 0.3.2'
 gem 'phonelib', '~> 0.6.50'

@@ -1,11 +1,12 @@
-class Api::V1::CompaniesController < ApplicationController
+class API::V1::CompaniesController < ApplicationController
   before_action :set_company, only: [:show, :update, :destroy]
 
   # GET /companies
   def index
     @companies = Company.all
-
-    render json: @companies
+    @pagy, @records = pagy(@companies)
+    render json: { data: @records}
+    # paginate @companies, per_page: 20
   end
 
   # GET /companies/1

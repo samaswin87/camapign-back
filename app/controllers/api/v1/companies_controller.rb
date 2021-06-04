@@ -5,8 +5,7 @@ class API::V1::CompaniesController < ApplicationController
   def index
     @companies = Company.all
     @pagy, @records = pagy(@companies)
-    render json: { data: @records}
-    # paginate @companies, per_page: 20
+    render json: @records
   end
 
   # GET /companies/1

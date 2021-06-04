@@ -3,7 +3,13 @@ Rails.application.routes.draw do
   namespace :api, defaults: {format: 'json'} do
     namespace :v1 do
       resources :users, only:[:show]
-      resources :companies
+      resources :companies do
+        member do 
+          get :setting
+          get :plans
+          get :current_plan
+        end
+      end
       resources :workflows
       resources :access_rights
       resources :timelines

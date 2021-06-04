@@ -1,16 +1,32 @@
 class API::V1::CompaniesController < ApplicationController
-  before_action :set_company, only: [:show, :update, :destroy]
+  before_action :set_company, only: [:show, :update, :destroy, :setting, :plans, :current_plan]
 
   # GET /companies
   def index
     @companies = Company.all
-    @pagy, @records = pagy(@companies)
-    render json: @records
+    @pagy, records = pagy(@companies)
+    render json: records
   end
 
   # GET /companies/1
   def show
     render json: @company
+  end
+
+  # GET /companies/1/setting
+  def setting
+    render json: @company.setting
+  end
+
+  # GET /companies/1/plans
+  def plans
+    @pagy, records = pagy(@company.plans)
+    render json: records
+  end
+
+  # GET /companies/1/current_plan
+  def current_plan
+    render json: @company.current_plan
   end
 
   # POST /companies

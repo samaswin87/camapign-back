@@ -3,8 +3,13 @@ class API::V1::CampaignsController < ApplicationController
 
   # GET /campaigns
   def index
-    @campaigns = Campaign::Depository.all
+    @campaigns = Campaign::Depository
     @pagy, records = pagy(@campaigns)
+    
+    records = records.includes(:company).each do |record|
+      record[:company_name] = record.company.name
+      record[:created_on] = record.created_on
+    end
     render json: records
   end
 

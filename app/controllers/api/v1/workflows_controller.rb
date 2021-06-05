@@ -5,6 +5,10 @@ class API::V1::WorkflowsController < ApplicationController
   def index
     @workflows = Workflow::Depository.all
     @pagy, records = pagy(@workflows)
+    records = records.includes(:company).each do |record|
+      record[:company_name] = record.company.name
+      record[:created_on] = record.created_on
+    end
     render json: records
   end
 

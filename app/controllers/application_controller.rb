@@ -1,6 +1,6 @@
 class ApplicationController < ActionController::API
   before_action :configure_permitted_parameters, if: :devise_controller?
-  before_action :authenticate_user!, unless: :devise_controller?
+  before_action :authenticate_api_v1_user!, unless: :devise_controller?
   after_action { pagy_headers_merge(@pagy) if @pagy }
   include DeviseTokenAuth::Concerns::SetUserByToken
   include Pagy::Backend

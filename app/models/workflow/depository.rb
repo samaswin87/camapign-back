@@ -24,5 +24,8 @@ module Workflow
         has_one :declaration, class_name: 'Workflow::Declaration'
         has_many :recipients, class_name: 'Workflow::Recipient'
         has_many :communications, through: :recipients
+
+        attribute :company_name, :string
+        attribute :created_on, :string
     end
 end

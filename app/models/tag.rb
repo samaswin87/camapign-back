@@ -12,4 +12,5 @@
 class Tag < ApplicationRecord
     enum status: [:active, :inactive]
     belongs_to :company
+
 end

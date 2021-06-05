@@ -362,6 +362,8 @@ class Demo
           phone: Faker::PhoneNumber.cell_phone,
           email: Faker::Internet.email,
           company_id: index,
+          no_of_campaigns: Faker::Number.between(100, 1000),
+          keywords: [Faker::Name.initials(5), Faker::Name.initials(5)],
           first_name: Faker::Name.first_name,
           last_name: Faker::Name.last_name,
           created_by_id: 1,

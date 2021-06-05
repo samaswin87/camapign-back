@@ -9,7 +9,8 @@ Rails.application.routes.draw do
 
       resources :users, only:[:show]
       resources :companies do
-        member do 
+        member do
+          resources :tags
           get :setting
           get :plans
           get :current_plan
@@ -31,7 +32,6 @@ Rails.application.routes.draw do
 
       resources :access_rights
       resources :timelines
-      resources :tags
       resources :surveys
       resources :menus
     end

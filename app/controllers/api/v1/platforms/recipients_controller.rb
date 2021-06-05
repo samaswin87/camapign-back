@@ -8,7 +8,10 @@ module API
         def index
           @recipients = Platform::Recipient
           @pagy, records = pagy(@recipients)
-    
+          
+          records = records.includes(:company).each do |record|
+            record[:company_name] = record.company.name
+          end
           render json: records
         end
       

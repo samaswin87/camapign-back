@@ -28,5 +28,7 @@ module Platform
 
         belongs_to :company
         has_many :workflow_recipients, class_name: 'Workflow::Recipient'
+
+        attribute :company_name
     end
 end

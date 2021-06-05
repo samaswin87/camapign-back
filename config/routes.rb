@@ -15,7 +15,15 @@ Rails.application.routes.draw do
           get :current_plan
         end
       end
-      resources :workflows
+      
+      namespace :workflows do
+        resources :depositories
+      end
+
+      namespace :campaigns do
+        resources :depositories
+      end
+
       resources :access_rights
       resources :timelines
       resources :recipients
@@ -23,7 +31,6 @@ Rails.application.routes.draw do
       resources :tags
       resources :surveys
       resources :menus
-      resources :campaigns
     end
   end
   

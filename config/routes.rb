@@ -24,10 +24,13 @@ Rails.application.routes.draw do
         resources :depositories
       end
 
+      namespace :platforms do
+        resources :recipients
+        resources :operators
+      end
+
       resources :access_rights
       resources :timelines
-      resources :recipients
-      resources :operators
       resources :tags
       resources :surveys
       resources :menus

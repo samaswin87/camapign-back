@@ -2,7 +2,7 @@ module API
   module V1
     module Campaigns
       class DepositoriesController < ApplicationController
-        before_action :set_depository, only: [:show, :update, :destroy, :setting, :plans, :current_plan]
+        before_action :set_depository, only: [:show, :update, :destroy]
       
         # GET /depositories
         def index
@@ -49,7 +49,7 @@ module API
         private
           # Use callbacks to share common setup or constraints between actions.
           def set_depository
-            @depository = Campaign.find(params[:id])
+            @depository = Campaign::Depository.find(params[:id])
           end
       
           # Only allow a list of trusted parameters through.

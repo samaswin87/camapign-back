@@ -7,7 +7,7 @@ module API
         # GET /depositories
         def index
           @depositories = Campaign::Depository
-          @pagy, records = pagy(@depositories)
+          @pagy, records = pagy(@depositories, items: params[:limit].to_i | 20)
           
           records = records.includes(:company).each do |record|
             record[:company_name] = record.company.name

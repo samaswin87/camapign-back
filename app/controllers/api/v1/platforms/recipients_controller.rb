@@ -6,11 +6,12 @@ module API
       
         # GET /recipients
         def index
-          @recipients = Platform::Recipient
-          @pagy, records = pagy(@recipients)
+          @recipients = Platform::Recipient.order('id ASC')
+          @pagy, records = pagy(@recipients, items: params[:limit].to_i | 20)
           
-          records = records.includes(:company).each do |record|
+          records = records.includes(:company).each_with_index do |record, index|
             record[:company_name] = record.company.name
+            record[:row_id] = index + 1
           end
           render json: records
         end
@@ -33,6 +34,7 @@ module API
       
         # PATCH/PUT /recipients/1
         def update
+          puts recipient_params
           if @recipient.update(recipient_params)
             render json: @recipient
           else
@@ -53,7 +55,7 @@ module API
       
           # Only allow a list of trusted parameters through.
           def recipient_params
-            params.require(:recipient).permit(:name, :email, :phone, :callForwarding)
+            params.require(:recipient).permit(:name, :email, :phone, :callForwarding, :status)
           end
       end      
     end

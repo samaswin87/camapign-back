@@ -30,5 +30,6 @@ module Platform
         has_many :workflow_recipients, class_name: 'Workflow::Recipient'
 
         attribute :company_name
+        attribute :row_id
     end
 end

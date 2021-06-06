@@ -340,7 +340,7 @@ class Demo
       (1..10).each do |i|
         print "."
         Platform::Operator.create({
-          status: 0,
+          status: [0, 1].sample,
           phone: Faker::PhoneNumber.cell_phone,
           company_id: index,
           name: Faker::Company.name,
@@ -358,7 +358,7 @@ class Demo
       (1..10).each do |i|
         print "."
         Platform::Recipient.create({
-          status: 0,
+          status: [0, 1].sample,
           phone: Faker::PhoneNumber.cell_phone,
           email: Faker::Internet.email,
           company_id: index,
@@ -400,6 +400,18 @@ class Demo
 
   def setup_users
     puts "Creating Users"
+    User.create(
+      {
+        status: 0,
+        first_name: Faker::Name.first_name,
+        last_name: Faker::Name.last_name,
+        role: 0,
+        company_id: 1,
+        email: 'admin@demo.com',
+        password: 'password',
+        password_confirmation: 'password'
+      }
+    )
     (1..10).each do |index|
       print "."
       User.create(

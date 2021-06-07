@@ -26,7 +26,11 @@ Rails.application.routes.draw do
       end
 
       namespace :platforms do
-        resources :recipients
+        resources :recipients do
+          collection do
+            put :statuses
+          end
+        end
         resources :operators
       end
 

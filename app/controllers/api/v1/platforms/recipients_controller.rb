@@ -46,6 +46,13 @@ module API
         def destroy
           @recipient.destroy
         end
+
+        # PATCH/PUT /recipients/statuses
+        def statuses
+          recipients = Platform::Recipient.where(id: params[:contacts])
+          recipients.update_all(status: params[:status])
+          render json: {message: 'Status updated for the selected contacts'}
+        end
       
         private
           # Use callbacks to share common setup or constraints between actions.
@@ -55,7 +62,7 @@ module API
       
           # Only allow a list of trusted parameters through.
           def recipient_params
-            params.require(:recipient).permit(:name, :email, :phone, :callForwarding, :status)
+            params.require(:recipient).permit(:name, :email, :phone, :callForwarding, :status, :contacts)
           end
       end      
     end

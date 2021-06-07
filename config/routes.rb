@@ -29,6 +29,7 @@ Rails.application.routes.draw do
         resources :recipients do
           collection do
             put :statuses
+            get :tags
           end
         end
         resources :operators

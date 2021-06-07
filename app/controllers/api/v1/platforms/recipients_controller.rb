@@ -6,14 +6,22 @@ module API
       
         # GET /recipients
         def index
-          @recipients = Platform::Recipient.order('id ASC')
-          @pagy, records = pagy(@recipients, items: params[:limit].to_i | 20)
+          filterrific = {}
+          filterrific['search_query'] = params[:searchparam] || ''
+          @filterrific = initialize_filterrific(
+            Platform::Recipient,
+            filterrific
+          ) or return
+          @pagy, records = pagy(@filterrific.find, items: params[:limit].to_i | 20)
           
-          records = records.includes(:company).each_with_index do |record, index|
-            record[:company_name] = record.company.name
-            record[:row_id] = index + 1
+          recipients = [] 
+          records.includes(:company).each_with_index do |record, index|
+            record_attributes = record.attributes
+            record_attributes[:company_name] = record.company.name
+            record_attributes[:row_id] = index + 1
+            recipients << record_attributes
           end
-          render json: records
+          render json: recipients
         end
       
         # GET /recipients/1
@@ -53,6 +61,12 @@ module API
           recipients.update_all(status: params[:status])
           render json: {message: 'Status updated for the selected contacts'}
         end
+
+        # GET /tags
+        def tags
+          @tags = Tag.all
+          render json: @tags
+        end
       
         private
           # Use callbacks to share common setup or constraints between actions.
@@ -62,7 +76,7 @@ module API
       
           # Only allow a list of trusted parameters through.
           def recipient_params
-            params.require(:recipient).permit(:name, :email, :phone, :callForwarding, :status, :contacts)
+            params.require(:recipient).permit(:name, :email, :phone, :callForwarding, :status, :contacts, :searchparam)
           end
       end      
     end

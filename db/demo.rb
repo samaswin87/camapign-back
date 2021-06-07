@@ -11,9 +11,25 @@ class Demo
     setup_workflow
     setup_campaign
     setup_menu
+    setup_tags
   end
 
   private
+
+  def setup_tags
+    puts "Creating tags"
+    (1..10).each do |index|
+      (1..10).each do |i|
+        print "."
+        Tag.create({
+          status: [0, 1].sample,
+          company_id: index,
+          name: Faker::Name.initials(5),
+        })
+      end
+    end
+    puts "\nTags creation completed"
+  end
 
   def setup_menu
     setup_menu_depositories
@@ -364,6 +380,7 @@ class Demo
           company_id: index,
           no_of_campaigns: Faker::Number.between(100, 1000),
           keywords: [Faker::Name.initials(5), Faker::Name.initials(5)],
+          tags: [Faker::Name.initials(5), Faker::Name.initials(5)],
           first_name: Faker::Name.first_name,
           last_name: Faker::Name.last_name,
           created_by_id: 1,

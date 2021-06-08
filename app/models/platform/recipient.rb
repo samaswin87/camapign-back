@@ -46,6 +46,7 @@ module Platform
         delegate :name, :to => :company, :prefix => true
         
         scope :status_by, ->(option) {
+            return nil  if option.blank?
             recipients = Platform::Recipient.arel_table
             case option.to_s
             when /^active/
@@ -86,6 +87,7 @@ module Platform
         }
 
         scope :sorted_by, ->(sort_option) {
+            return nil  if sort_option.blank?
             # extract the sort direction from the param value.
             direction = (sort_option =~ /desc$/) ? 'desc' : 'asc'
             recipients = Platform::Recipient.arel_table
@@ -112,7 +114,8 @@ module Platform
         }
 
         scope :with_phone, ->(option_with_phone) {
-            options = option_with_phone.split(' ')
+            return nil  if option_with_phone.blank?
+            options = option_with_phone.split('_eq_')
             case options[0].to_s
             when 'start_with'
                 where('phone LIKE ?', "#{options[1]}%")
@@ -128,7 +131,8 @@ module Platform
         }
 
         scope :with_email, ->(option_with_email) {
-            options = option_with_phone.split(' ')
+            return nil  if option_with_email.blank?
+            options = option_with_phone.split('_eq_')
             case options[0].to_s
             when 'start_with'
                 where('email LIKE ?', "#{options[1]}%")
@@ -144,10 +148,12 @@ module Platform
         }
 
         scope :with_tags, ->(tags) {
+            return nil  if tags.blank?
             where("tags @> ARRAY[?]::varchar[]", tags)
         }
 
         scope :with_keywords, ->(keywords) {
+            return nil  if keywords.blank?
             where("keywords @> ARRAY[?]::varchar[]", keywords)
         }
     end

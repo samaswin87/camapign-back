@@ -8,6 +8,10 @@ module API
         def index
           filterrific = {}
           filterrific['search_query'] = params[:searchparam] || ''
+          filters = params[:filters]
+          if filters.present?
+            filterrific = JSON.parse(filters)
+          end
           @filterrific = initialize_filterrific(
             Platform::Recipient,
             filterrific
@@ -86,7 +90,7 @@ module API
       
           # Only allow a list of trusted parameters through.
           def recipient_params
-            params.require(:recipient).permit(:name, :email, :phone, :callForwarding, :status, :contacts, :searchparam, :tags)
+            params.require(:recipient).permit(:name, :email, :phone, :callForwarding, :status, :contacts, :searchparam, :tags, :filters)
           end
       end      
     end

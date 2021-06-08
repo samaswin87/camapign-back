@@ -42,7 +42,6 @@ module API
       
         # PATCH/PUT /recipients/1
         def update
-          puts recipient_params
           if @recipient.update(recipient_params)
             render json: @recipient
           else
@@ -62,7 +61,18 @@ module API
           render json: {message: 'Status updated for the selected contacts'}
         end
 
-        # GET /tags
+        # PATCH/PUT /recipients/update_tags
+        def update_tags
+          tag_params = params[:tags]
+          recipients = Platform::Recipient.where(id: params[:contacts])
+          recipients.each do |recipient|
+            new_tags = (recipient.tags - tag_params[:removed]) + tag_params[:added]
+            recipient.update(tags: new_tags)
+          end
+          render json: {message: 'Tags updated for the selected contacts'}
+        end
+
+        # GET /recipients/tags
         def tags
           @tags = Tag.all
           render json: @tags
@@ -76,7 +86,7 @@ module API
       
           # Only allow a list of trusted parameters through.
           def recipient_params
-            params.require(:recipient).permit(:name, :email, :phone, :callForwarding, :status, :contacts, :searchparam)
+            params.require(:recipient).permit(:name, :email, :phone, :callForwarding, :status, :contacts, :searchparam, :tags)
           end
       end      
     end

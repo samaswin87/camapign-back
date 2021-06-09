@@ -147,13 +147,15 @@ module Platform
             end
         }
 
-        scope :with_tags, ->(tags) {
-            return nil  if tags.blank?
+        scope :with_tags, ->(tag) {
+            return nil  if tag.blank?
+            tags = tag.split('_')
             where("tags @> ARRAY[?]::varchar[]", tags)
         }
 
-        scope :with_keywords, ->(keywords) {
-            return nil  if keywords.blank?
+        scope :with_keywords, ->(keyword) {
+            return nil  if keyword.blank?
+            keywords = keyword.split('_')
             where("keywords @> ARRAY[?]::varchar[]", keywords)
         }
     end

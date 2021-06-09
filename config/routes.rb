@@ -31,6 +31,7 @@ Rails.application.routes.draw do
             put :statuses
             put :update_tags
             get :tags
+            get :keywords
           end
         end
         resources :operators

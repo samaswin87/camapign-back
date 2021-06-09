@@ -78,8 +78,14 @@ module API
 
         # GET /recipients/tags
         def tags
-          @tags = Tag.all
-          render json: @tags
+          tags = Tag.pluck(:name).uniq
+          render json: tags
+        end
+
+        # GET /recipients/keywords
+        def keywords
+          keywords = Platform::Recipient.pluck(:keywords).flatten.uniq
+          render json: keywords
         end
       
         private

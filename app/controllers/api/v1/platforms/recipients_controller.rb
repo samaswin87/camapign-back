@@ -38,7 +38,7 @@ module API
           @recipient = Platform::Recipient.new(recipient_params)
       
           if @recipient.save
-            render json: @recipient, status: :created, location: @recipient
+            render json: @recipient, status: :created
           else
             render json: @recipient.errors, status: :unprocessable_entity
           end
@@ -96,7 +96,23 @@ module API
       
           # Only allow a list of trusted parameters through.
           def recipient_params
-            params.require(:recipient).permit(:name, :email, :phone, :callForwarding, :status, :contacts, :searchparam, :tags, :filters)
+            params.require(:recipient).permit(
+              :first_name,
+              :last_name,
+              :middle_name,
+              :no_of_campaigns,
+              :keywords,
+              :notes,
+              :gender,
+              :email,
+              :phone,
+              :company_id,
+              :status,
+              :searchparam,
+              :filters,
+              tags: [],
+              contacts: []
+              )
           end
       end      
     end

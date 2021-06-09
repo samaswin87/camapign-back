@@ -9,8 +9,15 @@ Rails.application.routes.draw do
 
       resources :users, only:[:show]
       resources :companies do
+        collection do 
+          get :names
+        end
+        resources :tags do
+          collection do 
+            get :names
+          end
+        end
         member do
-          resources :tags
           get :setting
           get :plans
           get :current_plan

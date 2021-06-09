@@ -2,12 +2,19 @@ module API
   module V1
     class TagsController < ApplicationController
       before_action :set_tag, only: [:show, :update, :destroy]
+      before_action :set_company, only: [:show, :update, :destroy, :names]
       
       # GET /tags
       def index
         @tags = Tag
         @pagy, records = pagy(@tags)
         render json: records
+      end
+
+      # GET /names
+      def names
+        @tags = @company.tags.select(:id, :name)
+        render json: @tags
       end
     
       # GET /tags/1
@@ -44,6 +51,10 @@ module API
         # Use callbacks to share common setup or constraints between actions.
         def set_tag
           @tag = Tag.find(params[:id])
+        end
+
+        def set_company
+          @company = Company.find(params[:company_id])
         end
     
         # Only allow a list of trusted parameters through.

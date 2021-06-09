@@ -8,6 +8,12 @@ class API::V1::CompaniesController < ApplicationController
     render json: records
   end
 
+  # GET /names
+  def names
+    @companies = Company.select(:id, :name)
+    render json: @companies
+  end
+  
   # GET /companies/1
   def show
     render json: @company

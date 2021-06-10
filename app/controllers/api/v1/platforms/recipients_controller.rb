@@ -30,7 +30,9 @@ module API
       
         # GET /recipients/1
         def show
-          render json: @recipient
+          attributes = @recipient.attributes
+          attributes[:company_name] = @recipient.company.name
+          render json: attributes
         end
       
         # POST /recipients

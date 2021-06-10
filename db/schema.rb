@@ -280,6 +280,8 @@ ActiveRecord::Schema.define(version: 2021_06_03_134848) do
 
   create_table "platform_recipients", force: :cascade do |t|
     t.integer "status", default: 0
+    t.string "country_code", default: "US"
+    t.string "country_extension"
     t.string "phone"
     t.datetime "archived_at"
     t.integer "company_id"

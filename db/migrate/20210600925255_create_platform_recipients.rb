@@ -2,6 +2,8 @@ class CreatePlatformRecipients < ActiveRecord::Migration[6.1]
   def change
     create_table :platform_recipients do |t|
       t.integer :status, default: 0
+      t.string :country_code, default: 'US'
+      t.string :country_extension, defualt: '+1'
       t.string :phone
       t.datetime :archived_at
       t.integer :company_id

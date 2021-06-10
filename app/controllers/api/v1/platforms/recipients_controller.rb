@@ -110,6 +110,8 @@ module API
               :phone,
               :company_id,
               :status,
+              :country_code,
+              :country_extension,
               :searchparam,
               :filters,
               tags: [],

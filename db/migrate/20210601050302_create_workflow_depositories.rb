@@ -11,6 +11,7 @@ class CreateWorkflowDepositories < ActiveRecord::Migration[6.1]
 
       t.integer :created_by_id
       t.integer :updated_by_id
+      t.datetime  :archived_at
       t.timestamps
     end
 

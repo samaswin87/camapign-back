@@ -5,6 +5,7 @@ class CreateSurveyDepositories < ActiveRecord::Migration[6.1]
       t.integer :status, default: 0
       t.string :name
       t.string :description
+      t.datetime  :archived_at
       t.integer :created_by_id
       t.integer :updated_by_id
       t.timestamps

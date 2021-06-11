@@ -8,6 +8,7 @@ class CreateMenuDepositories < ActiveRecord::Migration[6.1]
       t.integer :operator_id
       t.boolean :default, default: false
       t.boolean :confidential, default: false
+      t.datetime  :archived_at
 
       t.integer :created_by_id
       t.integer :updated_by_id

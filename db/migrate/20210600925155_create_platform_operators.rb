@@ -7,6 +7,8 @@ class CreatePlatformOperators < ActiveRecord::Migration[6.1]
       t.integer   :company_id
       t.string    :name
       t.boolean   :short_code, default: false
+      t.string    :country_code, default: 'US'
+      t.string    :country_extension, default: '+1'
 
       t.integer   :created_by_id
       t.integer   :updated_by_id

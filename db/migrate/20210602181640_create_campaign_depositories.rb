@@ -10,6 +10,7 @@ class CreateCampaignDepositories < ActiveRecord::Migration[6.1]
       t.integer :group, default: 0
       t.datetime :scheduled_at
       t.time :recurring_at
+      t.datetime  :archived_at
       t.string :recurring_days, array: true, default: []
       t.integer :created_by_id
       t.integer :updated_by_id

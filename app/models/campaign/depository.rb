@@ -12,6 +12,7 @@
 #  group          | integer                        |           |          | 0
 #  scheduled_at   | timestamp without time zone    |           |          |
 #  recurring_at   | time without time zone         |           |          |
+#  archived_at    | timestamp without time zone    |           |          |
 #  recurring_days | character varying[]            |           |          | '{}'::character varying[]
 #  created_by_id  | integer                        |           |          |
 #  updated_by_id  | integer                        |           |          |

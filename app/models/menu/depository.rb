@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-# Column     |              Type              | Collation | Nullable |                      Default
-# ----------------+--------------------------------+-----------+----------+---------------------------------------------------
+# Column     |              Type              | Collation | Nullable |                    Default
+# ----------------+--------------------------------+-----------+----------+-----------------------------------------------
 #  id             | bigint                         |           | not null | nextval('menu_depositories_id_seq'::regclass)
 #  status         | integer                        |           |          | 0
 #  company_id     | integer                        |           |          |
@@ -10,6 +10,7 @@
 #  operator_id    | integer                        |           |          |
 #  default        | boolean                        |           |          | false
 #  confidential   | boolean                        |           |          | false
+#  archived_at    | timestamp without time zone    |           |          |
 #  created_by_id  | integer                        |           |          |
 #  updated_by_id  | integer                        |           |          |
 #  created_at     | timestamp(6) without time zone |           | not null |

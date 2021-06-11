@@ -77,6 +77,7 @@ ActiveRecord::Schema.define(version: 2021_06_03_134848) do
     t.integer "group", default: 0
     t.datetime "scheduled_at"
     t.time "recurring_at"
+    t.datetime "archived_at"
     t.string "recurring_days", default: [], array: true
     t.integer "created_by_id"
     t.integer "updated_by_id"
@@ -220,6 +221,7 @@ ActiveRecord::Schema.define(version: 2021_06_03_134848) do
     t.integer "operator_id"
     t.boolean "default", default: false
     t.boolean "confidential", default: false
+    t.datetime "archived_at"
     t.integer "created_by_id"
     t.integer "updated_by_id"
     t.datetime "created_at", precision: 6, null: false
@@ -266,6 +268,8 @@ ActiveRecord::Schema.define(version: 2021_06_03_134848) do
     t.integer "company_id"
     t.string "name"
     t.boolean "short_code", default: false
+    t.string "country_code", default: "US"
+    t.string "country_extension", default: "+1"
     t.integer "created_by_id"
     t.integer "updated_by_id"
     t.datetime "created_at", precision: 6, null: false
@@ -281,7 +285,7 @@ ActiveRecord::Schema.define(version: 2021_06_03_134848) do
   create_table "platform_recipients", force: :cascade do |t|
     t.integer "status", default: 0
     t.string "country_code", default: "US"
-    t.string "country_extension"
+    t.string "country_extension", default: "+1"
     t.string "phone"
     t.datetime "archived_at"
     t.integer "company_id"
@@ -313,6 +317,7 @@ ActiveRecord::Schema.define(version: 2021_06_03_134848) do
     t.integer "status", default: 0
     t.string "name"
     t.string "description"
+    t.datetime "archived_at"
     t.integer "created_by_id"
     t.integer "updated_by_id"
     t.datetime "created_at", precision: 6, null: false
@@ -461,6 +466,7 @@ ActiveRecord::Schema.define(version: 2021_06_03_134848) do
     t.boolean "confidential", default: false
     t.integer "created_by_id"
     t.integer "updated_by_id"
+    t.datetime "archived_at"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["company_id"], name: "index_workflow_depositories_on_company_id"

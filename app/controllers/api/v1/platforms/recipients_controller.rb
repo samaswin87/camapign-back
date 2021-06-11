@@ -57,7 +57,11 @@ module API
       
         # DELETE /recipients/1
         def destroy
-          @recipient.destroy
+          if @recipient.update({status: :inactive, archived_at: Time.now})
+            render json: @recipient
+          else
+            render json: @recipient.errors, status: :unprocessable_entity
+          end
         end
 
         # PATCH/PUT /recipients/statuses
@@ -113,6 +117,7 @@ module API
               :country_code,
               :country_extension,
               :searchparam,
+              :archived_at,
               :filters,
               tags: [],
               contacts: []

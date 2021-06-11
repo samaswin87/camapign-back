@@ -39,13 +39,15 @@ module Platform
         )
         enum status: [:active, :inactive]
         track_users
-        apply_filters scopes: [:phone, :email], search: { clauses: [
+        apply_filters scopes: [:phone, :email], 
+        search: { clauses: [
             "LOWER(platform_recipients.first_name) LIKE ?",
             "LOWER(platform_recipients.last_name) LIKE ?",
             "LOWER(platform_recipients.middle_name) LIKE ?",
             "LOWER(platform_recipients.phone) LIKE ?",
             "LOWER(platform_recipients.email) LIKE ?"
-        ]}
+        ]},
+        array_scopes: [:tags, :keywords]
 
         belongs_to :company
         has_many :workflow_recipients, class_name: 'Workflow::Recipient'
@@ -77,18 +79,6 @@ module Platform
             else
                 raise(ArgumentError, "Invalid sort option: #{sort_option.inspect}")
             end
-        }
-
-        scope :with_tags, ->(tag) {
-            return nil  if tag.blank?
-            tags = tag.split('_')
-            where("tags @> ARRAY[?]::varchar[]", tags)
-        }
-
-        scope :with_keywords, ->(keyword) {
-            return nil  if keyword.blank?
-            keywords = keyword.split('_')
-            where("keywords @> ARRAY[?]::varchar[]", keywords)
         }
     end
 end

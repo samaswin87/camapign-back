@@ -5,7 +5,6 @@ module ApplyFilters
     def apply_filters(options = {})
       scope :status_by, ->(option) {
         return nil  if option.blank?
-        recipients = Platform::Recipient.arel_table
         case option.to_s
         when /^active/
             self.active
@@ -46,6 +45,14 @@ module ApplyFilters
           where(condition, *terms.map { |term| [term] * num_or_conditions }.flatten)
         end
       }
+
+      options[:array_scopes].each do |scope|
+        scope "with_#{scope}", ->(keyword) {
+          return nil  if keyword.blank?
+          keywords = keyword.split('_')
+          where("#{scope} @> ARRAY[?]::varchar[]", keywords)
+        }
+      end
 
       options[:scopes].each do |scope|
         scope "with_#{scope}", ->(option_with_scope) {

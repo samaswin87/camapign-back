@@ -39,54 +39,18 @@ module Platform
         )
         enum status: [:active, :inactive]
         track_users
+        apply_filters scopes: [:phone, :email], search: { clauses: [
+            "LOWER(platform_recipients.first_name) LIKE ?",
+            "LOWER(platform_recipients.last_name) LIKE ?",
+            "LOWER(platform_recipients.middle_name) LIKE ?",
+            "LOWER(platform_recipients.phone) LIKE ?",
+            "LOWER(platform_recipients.email) LIKE ?"
+        ]}
 
         belongs_to :company
         has_many :workflow_recipients, class_name: 'Workflow::Recipient'
         has_many :menu_recipients, class_name: 'Menu::Recipient'
         has_many :campaign_recipients, class_name: 'Campaign::Recipient'
-
-        delegate :name, :to => :company, :prefix => true
-        
-        scope :status_by, ->(option) {
-            return nil  if option.blank?
-            recipients = Platform::Recipient.arel_table
-            case option.to_s
-            when /^active/
-                self.active
-            when /^inactive/
-                self.inactive
-            else
-                raise(ArgumentError, "Invalid option: #{option}")
-            end
-        }
-
-        scope :search_query, ->(query) {
-            return nil  if query.blank?
-            # condition query, parse into individual keywords
-            terms = query.to_s.downcase.split(/\s+/)
-            # replace "*" with "%" for wildcard searches,
-            # append '%', remove duplicate '%'s
-            terms = terms.map { |term|
-                (term.gsub('*', '%') + '%').gsub(/%+/, '%')
-            }
-            # configure number of OR conditions for provision
-            # of interpolation arguments. Adjust this if you
-            # change the number of OR conditions.
-            num_or_conditions = 5
-            where(
-            terms.map {
-                or_clauses = [
-                "LOWER(platform_recipients.first_name) LIKE ?",
-                "LOWER(platform_recipients.last_name) LIKE ?",
-                "LOWER(platform_recipients.middle_name) LIKE ?",
-                "LOWER(platform_recipients.phone) LIKE ?",
-                "LOWER(platform_recipients.email) LIKE ?"
-                ].join(' OR ')
-                "(#{ or_clauses })"
-            }.join(' AND '),
-            *terms.map { |term| [term] * num_or_conditions }.flatten
-            )
-        }
 
         scope :sorted_by, ->(sort_option) {
             return nil  if sort_option.blank?
@@ -112,40 +76,6 @@ module Platform
                 Platform::Recipient.joins(:company).order(company[:name].lower.send(direction)).order(recipients[:last_name].lower.send(direction))
             else
                 raise(ArgumentError, "Invalid sort option: #{sort_option.inspect}")
-            end
-        }
-
-        scope :with_phone, ->(option_with_phone) {
-            return nil  if option_with_phone.blank?
-            options = option_with_phone.split('_eq_')
-            case options[0].to_s
-            when 'start_with'
-                where('phone LIKE ?', "#{options[1]}%")
-            when 'end_with'
-                where('phone LIKE ?', "%#{options[1]}")
-            when 'equal'
-                where(phone: options[1])
-            when 'not_equal'
-                where.not(phone: options[1])
-            else
-                raise(ArgumentError, "Invalid condition: #{options[0]}")
-            end
-        }
-
-        scope :with_email, ->(option_with_email) {
-            return nil  if option_with_email.blank?
-            options = option_with_phone.split('_eq_')
-            case options[0].to_s
-            when 'start_with'
-                where('email LIKE ?', "#{options[1]}%")
-            when 'end_with'
-                where('email LIKE ?', "%#{options[1]}")
-            when 'equal'
-                where(email: options[1])
-            when 'not_equal'
-                where.not(email: options[1])
-            else
-                raise(ArgumentError, "Invalid condition: #{options[0]}")
             end
         }
 

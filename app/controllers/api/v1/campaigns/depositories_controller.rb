@@ -9,11 +9,17 @@ module API
           @depositories = Campaign::Depository
           @pagy, records = pagy(@depositories, items: params[:limit].to_i | 20)
           
-          records = records.includes(:company).each do |record|
-            record[:company_name] = record.company.name
-            record[:created_on] = record.created_on
+          depositories = [] 
+          records.includes(:company, :operator).each_with_index do |record, index|
+            record_attributes = record.attributes
+            record_attributes[:company_name] = record.company.name
+            record_attributes[:operator] = record.operator.phone
+            record_attributes[:row_id] = index + 1
+            record_attributes[:created_on] = record.created_on
+            depositories << record_attributes
           end
-          render json: records
+
+          render json: depositories
         end
       
         # GET /depositories/1

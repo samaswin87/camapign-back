@@ -23,11 +23,14 @@ module Campaign
     enum status: [:active, :inactive]
     enum group: [:immediate, :recurring, :scheduled]
     track_users
-    apply_filters  scopes: [:name], search: { joins: :operator, clauses: [
+    apply_filters  scopes: [:name], 
+    search: { joins: :operator, clauses: [
       "LOWER(campaign_depositories.name) LIKE ?",
       "LOWER(campaign_depositories.message) LIKE ?",
       "LOWER(platform_operators.phone) LIKE ?"
-    ]}
+    ]},
+    enum_scopes: [:status, :group],
+    sort: {fields: [:created_at, :scheduled_at, :recurring_at, :phone, :group, :name, :company_name], company: [:name]}
 
     RECURRING_DAYS = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
 
@@ -35,46 +38,6 @@ module Campaign
     belongs_to :operator, class_name: 'Platform::Operator'
     has_many :recipients, class_name: 'Campaign::Recipient'
     has_many :communications, through: :recipients
-
-    scope :sorted_by, ->(sort_option) {
-      return nil  if sort_option.blank?
-      # extract the sort direction from the param value.
-      direction = (sort_option =~ /desc$/) ? 'desc' : 'asc'
-      depositories = Campaign::Depository.arel_table
-      company = Company.arel_table
-      case sort_option.to_s
-      when /^created_at_/
-        order(depositories[:created_at].send(direction))
-      when /^scheduled_at_/
-        order(depositories[:scheduled_at].send(direction))
-      when /^recurring_at_/
-        order(depositories[:recurring_at].send(direction))
-      when /^phone_/
-        order(depositories[:phone].send(direction))
-      when /^group_/
-        order(depositories[:group].send(direction))
-      when /^name_/
-        order(depositories[:name].lower.send(direction))
-      when /^company_name_/
-        Campaign::Depository.joins(:company).order(company[:name].lower.send(direction)).order(depositories[:name].lower.send(direction))
-      else
-        raise(ArgumentError, "Invalid sort option: #{sort_option.inspect}")
-      end
-    }
-
-    scope :with_group, ->(option) {
-      return nil  if option.blank?
-      case option.to_s
-      when 'immediate'
-        self.immediate
-      when 'recurring'
-        self.recurring
-      when 'scheduled'
-        self.scheduled
-      else
-          raise(ArgumentError, "Invalid condition: #{option}")
-      end
-    }
 
     scope :with_recurring_days, ->(option) {
       return nil unless option.present? && RECURRING_DAYS.include?(option)

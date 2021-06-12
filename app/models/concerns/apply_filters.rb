@@ -3,17 +3,20 @@ module ApplyFilters
 
   class_methods do
     def apply_filters(options = {})
-      scope :status_by, ->(option) {
-        return nil  if option.blank?
-        case option.to_s
-        when /^active/
-            self.active
-        when /^inactive/
-            self.inactive
-        else
+      (options[:enum_scopes] || []).each do |enum_scope|
+        scope "#{enum_scope}_with", ->(option) {
+          return nil unless option.present?
+          
+          enum_details = self.send("#{enum_scope.to_s.pluralize}")
+          return nil unless enum_details.present?
+
+          if enum_details.keys.include?(option)
+            self.send("#{option}")
+          else
             raise(ArgumentError, "Invalid option: #{option}")
-        end
-      }
+          end
+        }
+      end
 
       scope :with_company, ->(name) {
         return nil unless name.present?
@@ -29,8 +32,8 @@ module ApplyFilters
         terms = terms.map { |term|
             (term.gsub('*', '%') + '%').gsub(/%+/, '%')
         }
-
-        clauses = options[:search][:clauses]
+        option_search = options[:search] || {}
+        clauses = option_search[:clauses]
         # configure number of OR conditions for provision
         # of interpolation arguments. Adjust this if you
         # change the number of OR conditions.
@@ -39,14 +42,33 @@ module ApplyFilters
             or_clauses = clauses.join(' OR ')
             "(#{ or_clauses })"
         }.join(' AND ')
-        if options[:search][:joins].present?
-          joins(options[:search][:joins]).where(condition, *terms.map { |term| [term] * num_or_conditions }.flatten)
+        if option_search[:joins].present?
+          joins(option_search[:joins]).where(condition, *terms.map { |term| [term] * num_or_conditions }.flatten)
         else
           where(condition, *terms.map { |term| [term] * num_or_conditions }.flatten)
         end
       }
 
-      options[:array_scopes].each do |scope|
+      scope :sorted_by, ->(sort_option) {
+        return nil if sort_option.blank?
+        # extract the sort direction from the param value.
+        direction = (sort_option =~ /desc$/) ? 'desc' : 'asc'
+        option_sort = options[:sort] || {}
+        records = self.arel_table
+        company = Company.arel_table if option_sort[:company]
+        sort_field = (option_sort[:fields] || []).map {|field| field if "#{field}_#{direction}" == sort_option.to_s }
+        if sort_field.compact.first
+          if company && sort_field.compact.first.to_s == 'company_name'
+            self.joins(:company).order(company[:name].lower.send(direction)).order(records[option_sort[:company].first].lower.send(direction))
+          else
+            order(records[sort_field.compact.first].send(direction))
+          end
+        else
+          raise(ArgumentError, "Invalid sort option: #{sort_option.inspect}")
+        end
+      }
+
+      (options[:array_scopes] || []).each do |scope|
         scope "with_#{scope}", ->(keyword) {
           return nil  if keyword.blank?
           keywords = keyword.split('_')
@@ -54,7 +76,7 @@ module ApplyFilters
         }
       end
 
-      options[:scopes].each do |scope|
+      (options[:scopes] || []).each do |scope|
         scope "with_#{scope}", ->(option_with_scope) {
           return nil  if option_with_scope.blank?
           options = option_with_scope.split('_eq_')

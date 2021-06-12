@@ -25,18 +25,6 @@
 #  updated_at        | timestamp(6) without time zone |           | not null |
 module Platform
     class Recipient < PlatformModel
-        filterrific(
-            default_filter_params: { sorted_by: 'created_at_desc' },
-            available_filters: [
-                :sorted_by,
-                :search_query,
-                :with_phone,
-                :with_email,
-                :with_tags,
-                :with_keywords,
-                :status_with
-            ]
-        )
         enum status: [:active, :inactive]
         track_users
         apply_filters scopes: [:phone, :email], 
@@ -49,7 +37,16 @@ module Platform
         ]},
         array_scopes: [:tags, :keywords],
         enum_scopes: [:status],
-        sort: {fields: [:created_at, :phone, :email, :first_name, :last_name, :company_name], company: [:last_name]}
+        sort: {fields: [:created_at, :phone, :email, :first_name, :last_name, :company_name], company: [:last_name]},
+        names: [
+            :sorted_by,
+            :search_query,
+            :with_phone,
+            :with_email,
+            :with_tags,
+            :with_keywords,
+            :status_with
+        ]
 
         belongs_to :company
         has_many :workflow_recipients, class_name: 'Workflow::Recipient'

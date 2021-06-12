@@ -30,7 +30,15 @@ module Campaign
       "LOWER(platform_operators.phone) LIKE ?"
     ]},
     enum_scopes: [:status, :group],
-    sort: {fields: [:created_at, :scheduled_at, :recurring_at, :phone, :group, :name, :company_name], company: [:name]}
+    sort: {fields: [:created_at, :scheduled_at, :recurring_at, :phone, :group, :name, :company_name], company: [:name]},
+    names: [
+      :sorted_by,
+      :search_query,
+      :with_name,
+      :with_recurring_days,
+      :status_with,
+      :group_with
+    ]
 
     RECURRING_DAYS = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
 

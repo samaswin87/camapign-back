@@ -3,6 +3,11 @@ module ApplyFilters
 
   class_methods do
     def apply_filters(options = {})
+
+      filterrific(
+        default_filter_params: { sorted_by: 'created_at_desc' },
+        available_filters: options[:names] || []
+      )
       (options[:enum_scopes] || []).each do |enum_scope|
         scope "#{enum_scope}_with", ->(option) {
           return nil unless option.present?

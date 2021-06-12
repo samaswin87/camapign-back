@@ -84,16 +84,17 @@ module ApplyFilters
       (options[:scopes] || []).each do |scope|
         scope "with_#{scope}", ->(option_with_scope) {
           return nil  if option_with_scope.blank?
+          table_name = self.new.class.table_name
           options = option_with_scope.split('_eq_')
           case options[0].to_s
           when 'start_with'
-              where("#{scope} LIKE ?", "#{options[1]}%")
+              where("#{table_name}.#{scope} LIKE ?", "#{options[1]}%")
           when 'end_with'
-              where("#{scope} LIKE ?", "%#{options[1]}")
+              where("#{table_name}.#{scope} LIKE ?", "%#{options[1]}")
           when 'equal'
-              where("#{scope}" => options[1])
+              where("#{table_name}.#{scope}" => options[1])
           when 'not_equal'
-              where.not("#{scope}" => options[1])
+              where.not("#{table_name}.#{scope}" => options[1])
           else
               raise(ArgumentError, "Invalid condition: #{options[0]}")
           end

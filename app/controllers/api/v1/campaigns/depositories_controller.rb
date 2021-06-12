@@ -6,8 +6,17 @@ module API
       
         # GET /depositories
         def index
-          @depositories = Campaign::Depository
-          @pagy, records = pagy(@depositories, items: params[:limit].to_i | 20)
+          filterrific = {}
+          filterrific['search_query'] = params[:searchparam] || ''
+          filters = params[:filters]
+          if filters.present?
+            filterrific = JSON.parse(filters)
+          end
+          @filterrific = initialize_filterrific(
+            Campaign::Depository,
+            filterrific
+          ) or return
+          @pagy, records = pagy(@filterrific.find, items: params[:limit].to_i | 20)
           
           depositories = [] 
           records.includes(:company, :operator).each_with_index do |record, index|

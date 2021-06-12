@@ -357,7 +357,7 @@ class Demo
         print "."
         Platform::Operator.create({
           status: [0, 1].sample,
-          phone: Faker::PhoneNumber.cell_phone,
+          phone: Faker::PhoneNumber.unique.cell_phone,
           company_id: index,
           name: Faker::Company.name,
           created_by_id: 1,
@@ -375,7 +375,7 @@ class Demo
         print "."
         Platform::Recipient.create({
           status: [0, 1].sample,
-          phone: Faker::PhoneNumber.cell_phone,
+          phone: Faker::PhoneNumber.unique.cell_phone,
           email: Faker::Internet.email,
           company_id: index,
           no_of_campaigns: Faker::Number.between(100, 1000),
@@ -401,7 +401,7 @@ class Demo
             status: 0,
             name: Faker::Company.name,
             email: Faker::Internet.email,
-            phone: Faker::PhoneNumber.cell_phone,
+            phone: Faker::PhoneNumber.unique.cell_phone,
             plan: plan,
             call_forwarding: false,
             total_credits: 1000,

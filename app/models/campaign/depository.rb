@@ -22,6 +22,7 @@ module Campaign
   class Depository < CampaignModel
     enum status: [:active, :inactive]
     enum group: [:immediate, :recurring, :scheduled]
+
     track_users
     apply_filters  scopes: [:name], 
     search: { joins: :operator, clauses: [
@@ -37,7 +38,8 @@ module Campaign
       :with_name,
       :with_recurring_days,
       :status_with,
-      :group_with
+      :group_with,
+      :with_phone
     ]
 
     RECURRING_DAYS = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
@@ -50,6 +52,23 @@ module Campaign
     scope :with_recurring_days, ->(option) {
       return nil unless option.present? && RECURRING_DAYS.include?(option)
       where("recurring_days @> ARRAY[?]::varchar[]", [option])
+    }
+
+    scope :with_phone, ->(option_with_phone) {
+      return nil  if option_with_phone.blank?
+      options = option_with_phone.split('_eq_')
+      case options[0].to_s
+      when 'start_with'
+          joins(:operator).where('platform_operators.phone LIKE ?', "#{options[1]}%")
+      when 'end_with'
+          joins(:operator).where('platform_operators.phone LIKE ?', "%#{options[1]}")
+      when 'equal'
+          joins(:operator).where('platform_operators.phone = ?', options[1])
+      when 'not_equal'
+          joins(:operator).where.not('platform_operators.phone = ?', options[1])
+      else
+          raise(ArgumentError, "Invalid condition: #{options[0]}")
+      end
     }
 
   end

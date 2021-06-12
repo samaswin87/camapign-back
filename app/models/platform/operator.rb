@@ -19,5 +19,9 @@ module Platform
     track_users
 
     belongs_to :company
+    
+    def phone=(phone)
+      self[:phone] = phone.to_s.gsub(/[^0-9]/, '')
+    end
   end
 end

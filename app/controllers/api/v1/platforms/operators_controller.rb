@@ -41,6 +41,18 @@ module API
         def destroy
           @operator.destroy
         end
+
+        # GET /operators/numbers
+        def numbers
+          records = []
+          Platform::Operator.all.each do |operator|
+            records << {
+              id: operator.id,
+              name: "#{operator.phone} (#{operator.name})"
+            }
+          end
+          render json: records
+        end
       
         private
           # Use callbacks to share common setup or constraints between actions.

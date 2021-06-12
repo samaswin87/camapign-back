@@ -34,8 +34,12 @@ module ApplyFilters
         terms = query.to_s.downcase.split(/\s+/)
         # replace "*" with "%" for wildcard searches,
         # append '%', remove duplicate '%'s
-        terms = terms.map { |term|
+        terms = terms.each_with_index.map { |term, index|
+          if index > 0
+            ('%' + term.gsub('*', '%') + '%').gsub(/%+/, '%')
+          else
             (term.gsub('*', '%') + '%').gsub(/%+/, '%')
+          end
         }
         option_search = options[:search] || {}
         clauses = option_search[:clauses]

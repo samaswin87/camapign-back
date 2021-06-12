@@ -41,7 +41,11 @@ Rails.application.routes.draw do
             get :keywords
           end
         end
-        resources :operators
+        resources :operators do
+          collection do
+            get :numbers
+          end
+        end
       end
 
       resources :access_rights

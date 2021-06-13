@@ -38,10 +38,14 @@ module API
       
         # POST /depositories
         def create
+          if valid_name?
+            render json: 'Name already exists', status: :conflict
+            return
+          end
+          
           @depository = Campaign::Depository.new(depository_params)
-      
           if @depository.save
-            render json: @depository, status: :created, location: @depository
+            render json: @depository, status: :created
           else
             render json: @depository.errors, status: :unprocessable_entity
           end
@@ -69,7 +73,20 @@ module API
       
           # Only allow a list of trusted parameters through.
           def depository_params
-            params.require(:depository).permit(:name, :email, :phone, :callForwarding)
+            params.require(:depository).permit(
+              :status, 
+              :name,
+              :scheduled_at, 
+              :message, 
+              :group, 
+              :recurring_at, 
+              :company_id, 
+              :operator_id,
+              recurring_days: [])
+          end
+
+          def valid_name?
+            Campaign::Depository.where(name: depository_params[:name]).size > 0
           end
       end      
     end

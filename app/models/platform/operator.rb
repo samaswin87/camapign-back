@@ -16,6 +16,9 @@
 module Platform
   class Operator < PlatformModel
     enum status: [:active, :inactive]
+
+    validates :name, uniqueness: { scope: :company, message: "Name already exists!" }
+    
     track_users
 
     belongs_to :company

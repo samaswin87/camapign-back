@@ -4,6 +4,7 @@
 # ----------------+--------------------------------+-----------+----------+---------------------------------------------------
 #  id             | bigint                         |           | not null | nextval('campaign_depositories_id_seq'::regclass)
 #  status         | integer                        |           |          | 0
+#  state          | character varying              |           |          | 
 #  company_id     | integer                        |           |          |
 #  no_of_contacts | integer                        |           |          | 0
 #  operator_id    | integer                        |           |          |
@@ -13,6 +14,8 @@
 #  scheduled_at   | timestamp without time zone    |           |          |
 #  recurring_at   | time without time zone         |           |          |
 #  archived_at    | timestamp without time zone    |           |          |
+#  published_at   | timestamp without time zone    |           |          |
+#  unpublished_at | timestamp without time zone    |           |          |
 #  recurring_days | character varying[]            |           |          | '{}'::character varying[]
 #  created_by_id  | integer                        |           |          |
 #  updated_by_id  | integer                        |           |          |
@@ -23,14 +26,17 @@ module Campaign
     enum status: [:active, :inactive]
     enum group: [:immediate, :recurring, :scheduled]
 
+    validates :name, uniqueness: { scope: :company, message: "Name already exists!" }
+    
     track_users
+    act_as_state_tracker
     apply_filters  scopes: [:name], 
     search: { joins: :operator, clauses: [
       "LOWER(campaign_depositories.name) LIKE ?",
       "LOWER(campaign_depositories.message) LIKE ?",
       "LOWER(platform_operators.phone) LIKE ?"
     ]},
-    enum_scopes: [:status, :group],
+    enum_scopes: [:status, :group, :state],
     sort: {fields: [:created_at, :scheduled_at, :recurring_at, :phone, :group, :name, :company_name], company: [:name]},
     names: [
       :sorted_by,

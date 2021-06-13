@@ -69,6 +69,7 @@ ActiveRecord::Schema.define(version: 2021_06_03_134848) do
 
   create_table "campaign_depositories", force: :cascade do |t|
     t.integer "status", default: 0
+    t.string "state"
     t.integer "company_id"
     t.integer "no_of_contacts", default: 0
     t.integer "operator_id"
@@ -81,6 +82,8 @@ ActiveRecord::Schema.define(version: 2021_06_03_134848) do
     t.string "recurring_days", default: [], array: true
     t.integer "created_by_id"
     t.integer "updated_by_id"
+    t.datetime "published_at"
+    t.datetime "unpublished_at"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["company_id"], name: "index_campaign_depositories_on_company_id"
@@ -215,6 +218,7 @@ ActiveRecord::Schema.define(version: 2021_06_03_134848) do
 
   create_table "menu_depositories", force: :cascade do |t|
     t.integer "status", default: 0
+    t.string "state"
     t.integer "company_id"
     t.string "keyword"
     t.integer "no_of_contacts", default: 0
@@ -222,6 +226,8 @@ ActiveRecord::Schema.define(version: 2021_06_03_134848) do
     t.boolean "default", default: false
     t.boolean "confidential", default: false
     t.datetime "archived_at"
+    t.datetime "published_at"
+    t.datetime "unpublished_at"
     t.integer "created_by_id"
     t.integer "updated_by_id"
     t.datetime "created_at", precision: 6, null: false
@@ -315,11 +321,14 @@ ActiveRecord::Schema.define(version: 2021_06_03_134848) do
   create_table "survey_depositories", force: :cascade do |t|
     t.integer "company_id"
     t.integer "status", default: 0
+    t.string "state"
     t.string "name"
     t.string "description"
     t.datetime "archived_at"
     t.integer "created_by_id"
     t.integer "updated_by_id"
+    t.datetime "published_at"
+    t.datetime "unpublished_at"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["company_id"], name: "index_survey_depositories_on_company_id"
@@ -458,6 +467,7 @@ ActiveRecord::Schema.define(version: 2021_06_03_134848) do
 
   create_table "workflow_depositories", force: :cascade do |t|
     t.integer "status", default: 0
+    t.string "state"
     t.integer "company_id"
     t.string "keyword"
     t.integer "no_of_contacts", default: 0
@@ -467,6 +477,8 @@ ActiveRecord::Schema.define(version: 2021_06_03_134848) do
     t.integer "created_by_id"
     t.integer "updated_by_id"
     t.datetime "archived_at"
+    t.datetime "published_at"
+    t.datetime "unpublished_at"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["company_id"], name: "index_workflow_depositories_on_company_id"

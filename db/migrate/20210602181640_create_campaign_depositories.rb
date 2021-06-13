@@ -2,6 +2,7 @@ class CreateCampaignDepositories < ActiveRecord::Migration[6.1]
   def change
     create_table :campaign_depositories do |t|
       t.integer :status, default: 0
+      t.string :state
       t.integer :company_id
       t.integer :no_of_contacts, default: 0
       t.integer :operator_id
@@ -14,6 +15,8 @@ class CreateCampaignDepositories < ActiveRecord::Migration[6.1]
       t.string :recurring_days, array: true, default: []
       t.integer :created_by_id
       t.integer :updated_by_id
+      t.datetime  :published_at
+      t.datetime  :unpublished_at
 
       t.timestamps
     end

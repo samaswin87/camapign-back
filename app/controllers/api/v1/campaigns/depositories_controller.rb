@@ -33,7 +33,11 @@ module API
       
         # GET /depositories/1
         def show
-          render json: @depository
+          record_attributes = @depository.attributes
+          record_attributes[:company_name] = @depository.company.name
+          record_attributes[:operator] = @depository.operator.phone
+          record_attributes[:created_on] = @depository.created_on
+          render json: record_attributes
         end
       
         # POST /depositories
@@ -80,6 +84,7 @@ module API
             params.require(:depository).permit(
               :status, 
               :name,
+              :state,
               :scheduled_at, 
               :archived_at,
               :message, 

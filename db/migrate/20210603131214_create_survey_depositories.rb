@@ -3,11 +3,14 @@ class CreateSurveyDepositories < ActiveRecord::Migration[6.1]
     create_table :survey_depositories do |t|
       t.integer :company_id
       t.integer :status, default: 0
+      t.string :state
       t.string :name
       t.string :description
       t.datetime  :archived_at
       t.integer :created_by_id
       t.integer :updated_by_id
+      t.datetime  :published_at
+      t.datetime  :unpublished_at
       t.timestamps
     end
 

@@ -26,6 +26,7 @@
 module Platform
     class Recipient < PlatformModel
         enum status: [:active, :inactive]
+
         track_users
         apply_filters scopes: [:phone, :email], 
         search: { clauses: [
@@ -52,5 +53,9 @@ module Platform
         has_many :workflow_recipients, class_name: 'Workflow::Recipient'
         has_many :menu_recipients, class_name: 'Menu::Recipient'
         has_many :campaign_recipients, class_name: 'Campaign::Recipient'
+
+        def phone=(phone)
+            self[:phone] = phone.to_s.gsub(/[^0-9]/, '')
+        end
     end
 end

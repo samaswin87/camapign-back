@@ -109,6 +109,7 @@ module API
               :no_of_campaigns,
               :keywords,
               :notes,
+              :state,
               :gender,
               :email,
               :phone,

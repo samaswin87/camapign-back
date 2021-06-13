@@ -77,6 +77,7 @@ module API
               :status, 
               :name,
               :scheduled_at, 
+              :archived_at,
               :message, 
               :group, 
               :recurring_at, 

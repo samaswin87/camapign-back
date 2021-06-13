@@ -62,7 +62,11 @@ module API
       
         # DELETE /depositories/1
         def destroy
-          @depository.destroy
+          if @depository.update({status: :inactive, archived_at: Time.now})
+            render json: @depository
+          else
+            render json: @depository.errors, status: :unprocessable_entity
+          end
         end
       
         private

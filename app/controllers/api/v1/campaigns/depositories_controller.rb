@@ -33,11 +33,7 @@ module API
       
         # GET /depositories/1
         def show
-          record_attributes = @depository.attributes
-          record_attributes[:company_name] = @depository.company.name
-          record_attributes[:operator] = @depository.operator.phone
-          record_attributes[:created_on] = @depository.created_on
-          render json: record_attributes
+          render json: display_record
         end
       
         # POST /depositories
@@ -57,6 +53,12 @@ module API
       
         # PATCH/PUT /depositories/1
         def update
+          if depository_params[:state]
+            @depository.published? ? @depository.unpublish! : @depository.publish!
+            render json: display_record
+            return
+          end
+
           if @depository.update(depository_params)
             render json: @depository
           else
@@ -97,6 +99,14 @@ module API
 
           def valid_name?
             Campaign::Depository.where(name: depository_params[:name]).size > 0
+          end
+
+          def display_record
+            record_attributes = @depository.attributes
+            record_attributes[:company_name] = @depository.company.name
+            record_attributes[:operator] = @depository.operator.phone
+            record_attributes[:created_on] = @depository.created_on
+            record_attributes
           end
       end      
     end

@@ -210,7 +210,7 @@ class Demo
           status: [0, 1].sample,
           depository_id: depository.id,
           recipient_id: i,
-          data: Faker::Json.shallow_json(3, { key: 'Name.first_name', value: 'Name.last_name' })
+          data: eval(Faker::Json.shallow_json(3, { key: 'Name.first_name', value: 'Name.last_name' }))
         })
       end
     end

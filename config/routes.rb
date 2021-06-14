@@ -29,7 +29,9 @@ Rails.application.routes.draw do
       end
 
       namespace :campaigns do
-        resources :depositories
+        resources :depositories do
+          resources :recipients
+        end
       end
 
       namespace :platforms do

@@ -13,6 +13,20 @@
 module Campaign
   class Recipient < CampaignModel
     enum status: [:draft, :replied]
+    serialize :data, Hash
+
+    apply_filters  scopes: [:name], 
+    search: { joins: :platform_recipient, clauses: [
+      "LOWER(platform_recipients.phone) LIKE ?"
+    ]},
+    enum_scopes: [:status],
+    sort: {fields: [:created_at]},
+    names: [
+      :sorted_by,
+      :search_query,
+      :status_with
+    ]
+
 
     belongs_to :depository, class_name: 'Campaign::Depository'
     belongs_to :platform_recipient, foreign_key: :recipient_id, class_name: 'Platform::Recipient'

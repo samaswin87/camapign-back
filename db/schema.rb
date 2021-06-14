@@ -97,6 +97,7 @@ ActiveRecord::Schema.define(version: 2021_06_03_134848) do
 
   create_table "campaign_recipients", force: :cascade do |t|
     t.integer "status", default: 0
+    t.string "state"
     t.integer "recipient_id"
     t.integer "depository_id"
     t.datetime "archived_at"

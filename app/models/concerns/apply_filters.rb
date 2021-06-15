@@ -80,7 +80,7 @@ module ApplyFilters
       (options[:array_scopes] || []).each do |scope|
         scope "with_#{scope}", ->(keyword) {
           return nil  if keyword.blank?
-          keywords = keyword.split('_')
+          keywords = keyword.split(',')
           where("#{scope} @> ARRAY[?]::varchar[]", keywords)
         }
       end
@@ -89,7 +89,7 @@ module ApplyFilters
         scope "with_#{scope}", ->(option_with_scope) {
           return nil  if option_with_scope.blank?
           table_name = self.new.class.table_name
-          options = option_with_scope.split('_eq_')
+          options = option_with_scope.split(',')
           case options[0].to_s
           when 'start_with'
               where("#{table_name}.#{scope} LIKE ?", "#{options[1]}%")

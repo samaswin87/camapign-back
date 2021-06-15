@@ -47,7 +47,7 @@ module Campaign
 
     scope :with_phone, ->(option_with_phone) {
       return nil  if option_with_phone.blank?
-      options = option_with_phone.split('_eq_')
+      options = option_with_phone.split(',')
       case options[0].to_s
       when 'start_with'
           joins(:platform_recipient).where('platform_recipients.phone LIKE ?', "#{options[1]}%")
@@ -64,13 +64,13 @@ module Campaign
 
     scope :with_tags, ->(keyword) {
       return nil if keyword.blank?
-      keywords = keyword.split('_')
+      keywords = keyword.split(',')
       joins(:platform_recipient).where("platform_recipients.tags @> ARRAY[?]::varchar[]", keywords)
     }
 
     scope :with_data, ->(key_with_value) {
       return nil if key_with_value.blank?
-      keywords = key_with_value.split('_b_')
+      keywords = key_with_value.split(',')
       return nil if keywords.size <= 1
 
       where("LOWER(data::text)::jsonb @> ?", {"#{keywords[0]}": keywords[1]}.to_json)
@@ -78,7 +78,7 @@ module Campaign
 
     scope :with_data_keys, ->(key) {
       return nil if key.blank?
-      keys = key.split('_b_')
+      keys = key.split(',')
       where("data?& array[:keys]", keys: keys)
     }
 

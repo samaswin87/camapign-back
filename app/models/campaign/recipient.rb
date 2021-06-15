@@ -14,7 +14,6 @@
 module Campaign
   class Recipient < CampaignModel
     enum status: [:active, :inactive]
-    serialize :data, Hash
 
     aasm whiny_transitions: false, column: 'state' do
       state :draft, initial: true
@@ -38,7 +37,11 @@ module Campaign
     names: [
       :sorted_by,
       :search_query,
-      :status_with
+      :status_with,
+      :with_phone,
+      :with_tags,
+      :with_data_keys,
+      :with_data
     ]
 
 
@@ -60,9 +63,23 @@ module Campaign
     }
 
     scope :with_tags, ->(keyword) {
-      return nil  if keyword.blank?
+      return nil if keyword.blank?
       keywords = keyword.split('_')
       joins(:platform_recipient).where("platform_recipients.tags @> ARRAY[?]::varchar[]", keywords)
+    }
+
+    scope :with_data, ->(key_with_value) {
+      return nil if key_with_value.blank?
+      keywords = key_with_value.split('_b_')
+      return nil if keywords.size <= 1
+
+      where("LOWER(data::text)::jsonb @> ?", {"#{keywords[0]}": keywords[1]}.to_json)
+    }
+
+    scope :with_data_keys, ->(key) {
+      return nil if key.blank?
+      keys = key.split('_b_')
+      where("data?& array[:keys]", keys: keys)
     }
 
     belongs_to :depository, class_name: 'Campaign::Depository'

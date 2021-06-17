@@ -231,7 +231,7 @@ class Demo
           message: Faker::Lorem.paragraph,
           group: [0, 1, 2].sample,
           scheduled_at: Time.now,
-          recurring_at: Time.now,
+          recurring_at: ['15:15', '9:30', '23:10'].sample,
           recurring_days: ['Mon', 'Tue'],
           created_by_id: 1,
           updated_by_id: 1

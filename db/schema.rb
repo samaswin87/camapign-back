@@ -77,7 +77,7 @@ ActiveRecord::Schema.define(version: 2021_06_03_134848) do
     t.text "message"
     t.integer "group", default: 0
     t.datetime "scheduled_at"
-    t.time "recurring_at"
+    t.string "recurring_at"
     t.datetime "archived_at"
     t.string "recurring_days", default: [], array: true
     t.integer "created_by_id"

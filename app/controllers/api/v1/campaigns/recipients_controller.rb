@@ -2,7 +2,8 @@ module API
     module V1
         module Campaigns
             class RecipientsController < ApplicationController
-                before_action :set_depository, only: [:index]
+                before_action :set_depository, only: [:index, :update]
+                before_action :set_recipient, only: [:update]
 
                 # GET /recipients
                 def index
@@ -31,11 +32,24 @@ module API
                     render json: recipients
                 end
 
+                # PATCH/PUT /recipients/1
+                def update
+                    if @recipient.update(recipient_params)
+                        render json: @recipient
+                    else
+                        render json: @recipient.errors, status: :unprocessable_entity
+                    end
+                end
+
                 private
 
                 # Use callbacks to share common setup or constraints between actions.
                 def set_depository
                     @depository = Campaign::Depository.find(params[:depository_id])
+                end
+
+                def set_recipient
+                    @recipient = Campaign::Recipient.find(params[:id])
                 end
             
                 # Only allow a list of trusted parameters through.

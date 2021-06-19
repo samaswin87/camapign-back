@@ -41,6 +41,21 @@ module API
                     end
                 end
 
+                # POST /recipients
+                def create
+                    new_params = {
+                        recipient_id: recipient_params[:recipient_id],
+                        depository_id: params[:depository_id]
+                    }
+                    @recipient = Campaign::Recipient.new(new_params)
+                
+                    if @recipient.save
+                    render json: @recipient, status: :created
+                    else
+                    render json: @recipient.errors, status: :unprocessable_entity
+                    end
+                end
+
                 private
 
                 # Use callbacks to share common setup or constraints between actions.
@@ -55,6 +70,7 @@ module API
                 # Only allow a list of trusted parameters through.
                 def recipient_params
                     params.require(:recipient).permit(
+                    :recipient_id,
                     :status, 
                     :name,
                     :state,

@@ -5,4 +5,6 @@ class ApplicationRecord < ActiveRecord::Base
   include DisplayTimestamp
   include ApplyFilters
   include TrackState
+
+  default_scope { order("updated_at DESC") }
 end

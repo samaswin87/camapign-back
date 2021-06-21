@@ -5,7 +5,7 @@ module ApplyFilters
     def apply_filters(options = {})
 
       filterrific(
-        default_filter_params: { sorted_by: 'created_at_desc' },
+        default_filter_params: { sorted_by: 'updated_at_desc' },
         available_filters: options[:names] || []
       )
       (options[:enum_scopes] || []).each do |enum_scope|

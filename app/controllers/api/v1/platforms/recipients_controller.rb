@@ -120,6 +120,7 @@ module API
               :searchparam,
               :archived_at,
               :filters,
+              custom_fields: {},
               tags: [],
               contacts: []
               )

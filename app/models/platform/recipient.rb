@@ -26,6 +26,7 @@
 module Platform
     class Recipient < PlatformModel
         enum status: [:active, :inactive]
+        enum gender: { male: 1, female: 0}
 
         track_users
         apply_filters scopes: [:phone, :email], 

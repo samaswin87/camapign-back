@@ -22,8 +22,7 @@ module API
                     recipients = [] 
                     records.includes(:platform_recipient).each_with_index do |record, index|
                         record_attributes = record.attributes
-                        record_attributes[:recipient] = record.platform_recipient.phone
-                        record_attributes[:tags] = record.platform_recipient.tags
+                        record_attributes[:platform_recipient] = record.platform_recipient
                         record_attributes[:row_id] = index + 1
                         record_attributes[:created_on] = record.created_on
                         recipients << record_attributes

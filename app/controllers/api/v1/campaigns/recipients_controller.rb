@@ -3,7 +3,7 @@ module API
         module Campaigns
             class RecipientsController < ApplicationController
                 before_action :set_depository, only: [:index, :update]
-                before_action :set_recipient, only: [:update]
+                before_action :set_recipient, only: [:update, :show]
 
                 # GET /recipients
                 def index
@@ -54,6 +54,13 @@ module API
                     else
                     render json: @recipient.errors, status: :unprocessable_entity
                     end
+                end
+
+                # GET /recipients/1
+                def show
+                    attributes = @recipient.platform_recipient.attributes
+                    attributes[:company_name] = @recipient.platform_recipient.company.name
+                    render json: attributes
                 end
 
                 private

@@ -8,12 +8,13 @@ module API
         def index
           filterrific = {}
           filterrific['search_query'] = params[:searchparam] || ''
+          recipients = filterrific['search_query'].present? ? Platform::Recipient : Platform::Recipient.order("updated_at DESC")
           filters = params[:filters]
           if filters.present?
             filterrific = JSON.parse(filters)
           end
           @filterrific = initialize_filterrific(
-            Platform::Recipient,
+            recipients,
             filterrific
           ) or return
           @pagy, records = pagy(@filterrific.find, items: params[:limit].to_i | 20)

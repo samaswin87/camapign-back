@@ -6,7 +6,6 @@ class CreateCampaignRecipients < ActiveRecord::Migration[6.1]
       t.integer :recipient_id
       t.integer :depository_id
       t.datetime :archived_at
-      t.jsonb :data, default: {}
       
       t.timestamps
     end

@@ -8,7 +8,6 @@
 #  recipient_id  | integer                        |           |          |
 #  depository_id | integer                        |           |          |
 #  archived_at   | timestamp without time zone    |           |          |
-#  data          | jsonb                          |           |          | '{}'::jsonb
 #  created_at    | timestamp(6) without time zone |           | not null |
 #  updated_at    | timestamp(6) without time zone |           | not null |
 module Campaign

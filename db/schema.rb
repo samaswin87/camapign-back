@@ -101,7 +101,6 @@ ActiveRecord::Schema.define(version: 2021_06_03_134848) do
     t.integer "recipient_id"
     t.integer "depository_id"
     t.datetime "archived_at"
-    t.jsonb "data", default: {}
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end

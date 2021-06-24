@@ -209,8 +209,7 @@ class Demo
         Campaign::Recipient.create({
           status: [0, 1].sample,
           depository_id: depository.id,
-          recipient_id: i,
-          data: {'first_name': Faker::Name.first_name, 'last_name': Faker::Name.last_name, 'middle_name':  Faker::Name.middle_name}
+          recipient_id: i
         })
       end
     end
@@ -383,6 +382,7 @@ class Demo
           tags: [Faker::Name.initials(5), Faker::Name.initials(5)],
           first_name: Faker::Name.first_name,
           last_name: Faker::Name.last_name,
+          custom_fields: { country_name: 'IN', state_name: 'TN', city_name: 'CH' },
           created_by_id: 1,
           updated_by_id: 1
         })

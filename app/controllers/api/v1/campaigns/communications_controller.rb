@@ -7,7 +7,7 @@ module API
 
                 # GET /communications
                 def index
-                    render json: @recipient.communications.order("updated_at DESC")
+                    render json: @recipient.communications.where(delivery: [:draft, :inbound, :outbound]).order("created_at DESC")
                 end
 
                 private

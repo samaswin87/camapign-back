@@ -246,7 +246,7 @@ class Demo
       (1..5).each do |i|
         print "."
         Campaign::Communication.create({
-          delivery: [0, 1, 2, 3].sample,
+          delivery: [0, 1, 2].sample,
           recipient_id: recipient.id,
           message: Faker::Lorem.paragraph,
         })

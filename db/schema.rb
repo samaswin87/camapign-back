@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_06_03_134848) do
+ActiveRecord::Schema.define(version: 2021_06_27_135430) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -391,6 +391,16 @@ ActiveRecord::Schema.define(version: 2021_06_03_134848) do
     t.index ["user_id"], name: "index_timelines_on_user_id"
   end
 
+  create_table "twilio_settings", force: :cascade do |t|
+    t.string "sid"
+    t.string "token"
+    t.integer "company_id"
+    t.integer "status", default: 0
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["company_id"], name: "index_twilio_settings_on_company_id"
+  end
+
   create_table "user_settings", force: :cascade do |t|
     t.integer "user_id"
     t.boolean "notify_workflow", default: false
@@ -555,6 +565,7 @@ ActiveRecord::Schema.define(version: 2021_06_03_134848) do
   add_foreign_key "survey_prompts", "users", column: "updated_by_id"
   add_foreign_key "tags", "companies"
   add_foreign_key "timelines", "users"
+  add_foreign_key "twilio_settings", "companies"
   add_foreign_key "user_settings", "users"
   add_foreign_key "users", "companies"
   add_foreign_key "workflow_communications", "workflow_recipients", column: "recipient_id"

@@ -23,6 +23,7 @@ class Company < ApplicationRecord
 
     has_one :setting, class_name: 'CompanySetting'
     has_one :current_plan, -> {  where('month = ?', Date.today.strftime("%b-%Y")) }, class_name: 'CompanyPlan'
+    has_one :twilio_setting
 
     has_many :users
     has_many :operators, class_name: 'Platform::Operator'

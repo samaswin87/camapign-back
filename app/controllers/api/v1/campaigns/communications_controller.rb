@@ -12,12 +12,22 @@ module API
 
                 # POST /communications
                 def create
-                    @recipient = @recipient.communications.new(message: communication_params[:message])
+                    @communication = @recipient.communications.new(message: communication_params[:message])
                 
-                    if @recipient.save
-                    render json: @recipient, status: :created
+                    if @communication.save
+                        begin
+                            @depository.company.twilio_setting.connect do |client|
+                                message = client.messages.create(body: communication_params[:message],from: @depository.operator.phone, to: @recipient.platform_recipient.phone)
+                            end
+                        rescue Twilio::REST::RestError => error
+                            @error = error
+                            puts @error.code
+                            puts @error.message
+                        end
+
+                        render json: @communication, status: :created
                     else
-                    render json: @recipient.errors, status: :unprocessable_entity
+                        render json: @communication.errors, status: :unprocessable_entity
                     end
                 end
 

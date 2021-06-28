@@ -10,6 +10,7 @@
 #  updated_at   | timestamp(6) without time zone |           | not null |
 module Campaign
   class Communication < CampaignModel
+    track_message_log
     enum delivery: [:draft, :outbound, :inbound, :voice_outbound, :voice_inbound]
 
     belongs_to :recipient, class_name: 'Campaign::Recipient'

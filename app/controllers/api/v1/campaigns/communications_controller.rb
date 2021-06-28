@@ -17,12 +17,12 @@ module API
                     if @communication.save
                         begin
                             @depository.company.twilio_setting.connect do |client|
-                                message = client.messages.create(body: communication_params[:message],from: @depository.operator.phone, to: @recipient.platform_recipient.phone)
+                                client.messages.create(body: communication_params[:message], from: @depository.operator.phone, to: @recipient.platform_recipient.phone)
                             end
+                            MessageLog.create(source: @communication, integration: @depository.company.twilio_setting, status: 'success')
+                            @communication.inbound!
                         rescue Twilio::REST::RestError => error
-                            @error = error
-                            puts @error.code
-                            puts @error.message
+                            MessageLog.create(code: error.code, message: error.message, source: @communication, integration: @depository.company.twilio_setting, status: 'fail')
                         end
 
                         render json: @communication, status: :created

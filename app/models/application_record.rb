@@ -5,4 +5,5 @@ class ApplicationRecord < ActiveRecord::Base
   include DisplayTimestamp
   include ApplyFilters
   include TrackState
+  include Loggable
 end

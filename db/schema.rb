@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_06_27_135430) do
+ActiveRecord::Schema.define(version: 2021_06_28_032637) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -265,6 +265,21 @@ ActiveRecord::Schema.define(version: 2021_06_27_135430) do
     t.datetime "updated_at", precision: 6, null: false
     t.index ["depository_id"], name: "index_menu_recipients_on_depository_id"
     t.index ["recipient_id"], name: "index_menu_recipients_on_recipient_id"
+  end
+
+  create_table "message_logs", force: :cascade do |t|
+    t.string "code"
+    t.text "message"
+    t.integer "status", default: 0
+    t.string "source_type", null: false
+    t.bigint "source_id", null: false
+    t.string "integration_type", null: false
+    t.bigint "integration_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["integration_type", "integration_id"], name: "index_message_logs_on_integration"
+    t.index ["source_type", "source_id", "integration_type", "integration_id"], name: "index_message_logs_records"
+    t.index ["source_type", "source_id"], name: "index_message_logs_on_source"
   end
 
   create_table "platform_operators", force: :cascade do |t|
